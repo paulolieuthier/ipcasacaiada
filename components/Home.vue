@@ -108,36 +108,26 @@
     <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
         <div id="contact-row">
             <div id="contact-info">
-                <ul>
-                    <li>
-                        <i class="fab icon-large fa-whatsapp"></i>
-                        <p>
-                            <span class="title">Whatsapp</span>
-                            <span class="subtitle">(81) 9319-6221</span>
-                        </p>
-                    </li>
-                    <li>
-                        <i class="fas icon-large fa-mobile-alt"></i>
-                        <p>
-                            <span class="title">Telefone</span>
-                            <span class="subtitle">(81) 3432-3629</span>
-                        </p>
-                    </li>
-                    <li>
-                        <i class="fas icon-medium fa-map-marked-alt"></i>
-                        <p>
-                            <span class="title">Localização</span>
-                            <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
-                        </p>
-                    </li>
-                    <li>
-                        <i class="fas icon-medium fa-envelope-open-text"></i>
-                        <p>
-                            <span class="title">Email</span>
-                            <span class="subtitle">central.ipcc@gmail.com</span>
-                        </p>
-                    </li>
-                </ul>
+                <i class="fab icon-large fa-whatsapp"></i>
+                <p>
+                    <span class="title">Whatsapp</span>
+                    <span class="subtitle">(81) 9319-6221</span>
+                </p>
+                <i class="fas icon-large fa-mobile-alt"></i>
+                <p>
+                    <span class="title">Telefone</span>
+                    <span class="subtitle">(81) 3432-3629</span>
+                </p>
+                <i class="fas icon-medium fa-map-marked-alt"></i>
+                <p>
+                    <span class="title">Localização</span>
+                    <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
+                </p>
+                <i class="fas icon-medium fa-envelope-open-text"></i>
+                <p>
+                    <span class="title">Email</span>
+                    <span class="subtitle">central.ipcc@gmail.com</span>
+                </p>
             </div>
             <div id="contact-form">
                 <input type="text" placeholder="Nome" />
@@ -416,55 +406,46 @@ Section#groups
 Section#contact #contact-row
     align-items start
     display grid
-    grid-row-gap 40px
+    grid-row-gap 80px
     grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 400px)}, 1fr))
     justify-items center
     padding 30px 50px
     width 100%
 
-    #contact-info, #contact-form
-        min-width 80%
+    #contact-form
+        min-width 70%
 
     #contact-info
-        ul
-            list-style none
+        align-items center
+        display grid
+        grid-column-gap 30px
+        grid-row-gap 40px
+        grid-template-columns min-content auto
+
+        i
+            text-align center
+
+        i.icon-medium
+            font-size 2.8rem
+
+        i.icon-large
+            font-size 3.5rem
+
+        p
+            display flex
+            flex-flow column nowrap
             margin 0
-            padding 0
 
-            li
-                align-items start
-                display flex
-                flex-flow row nowrap
-                margin-bottom 25px
+            span
+                white-space nowrap
 
-                i, p
-                    padding 10px
+            span.title
+                font-size 18px
 
-                i
-                    text-align center
-                    width 100px
-
-                i.icon-medium
-                    font-size 2.8rem
-
-                i.icon-large
-                    font-size 3.5rem
-
-                p
-                    display flex
-                    flex-flow column nowrap
-                    margin 0
-
-                    span
-                        white-space nowrap
-
-                    span.title
-                        font-size 18px
-
-                    span.subtitle
-                        color #444
-                        font-size 16px
-                        margin-top 5px
+            span.subtitle
+                color #444
+                font-size 16px
+                margin-top 5px
 
     #contact-form
         background white
