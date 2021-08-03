@@ -43,15 +43,18 @@
     </Section>
 
     <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
-        <ul>
-            <template v-for="(chunk, i) in sermons">
-                <li v-for="sermon in chunk">
-                    <a href="#">
-                        <Card :title="sermon.title" :imagesrc="sermon.image" />
-                    </a>
-                </li>
-            </template>
-        </ul>
+        <div id="cards">
+            <a v-for="sermon in sermons" id="card" href="#">
+                <div class="card">
+                    <div class="image-wrapper">
+                        <img :src="sermon.image" />
+                    </div>
+                    <template v-if="sermon.title">
+                        <span>{{ sermon.title }}</span>
+                    </template>
+                </div>
+            </a>
+        </div>
         <Button class="see-more">Ver Todos</Button>
     </Section>
 
@@ -177,15 +180,11 @@
 
 <script>
 import Section from './Section.vue'
-import Card from './Card.vue'
 import Button from './Button.vue'
-
-import * as _ from 'lodash'
 
 export default {
     components: {
         Section,
-        Card,
         Button,
     },
     data: function () {
@@ -235,11 +234,6 @@ export default {
                 { title: 'Romanos', image: 'assets/sermons/series-7.jpg' },
                 { title: 'Salmos', image: 'assets/sermons/series-8.jpg' },
             ]
-        }
-    },
-    computed: {
-        sermons: function() {
-            return _.chunk(this.sermons, 4)
         }
     }
 }
@@ -340,17 +334,46 @@ Section#about-us ul
         border-bottom 1px solid #ccc
         padding-bottom 40px
 
-Section#sermon-series ul
-    display flex
-    flex-flow row wrap
-    justify-content space-between
-    list-style none
-    margin 0
-    padding 0
+Section#sermon-series
+    #cards
+        display grid
+        grid-gap 50px
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 250px)}, 1fr))
+        padding 20px 50px
+        width 100%
 
-    li
-        margin 0
-        width 25%
+        .card
+            align-items center
+            display flex
+            flex-flow column nowrap
+
+        .card .image-wrapper
+            box-shadow 0 0 1px #000
+            overflow hidden
+            width 100%
+
+        .card img
+            display block
+            transition transform 0.2s
+            width 100%
+
+        .card span
+            font-weight 600
+            margin 10px 0
+            padding 10px 0
+            position relative
+
+        .card:hover img
+            transform scale(1.1)
+
+        .card:hover span::after
+            background #3069B3
+            bottom 2px
+            content ''
+            height 4px
+            left 0
+            position absolute
+            width 100%
 
 Section#groups
     #cards
