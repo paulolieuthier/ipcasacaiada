@@ -321,7 +321,7 @@ Section#about-us ul
     li.alternate
         flex-direction row-reverse
 
-        .card img
+        .card
             border-radius 0 3px 3px 0
             mask-image linear-gradient(to left, rgb(0, 0, 0) 75%, transparent)
 
@@ -331,6 +331,21 @@ Section#about-us ul
     li.border
         border-bottom 1px solid #ccc
         padding-bottom 40px
+
+    @media (max-width: 800px)
+        li, li.alternate
+            flex-flow column nowrap
+
+            .card
+                border-radius 0
+                height 200px
+                margin-bottom 30px
+                mask-image linear-gradient(to bottom, rgb(0, 0, 0) 75%, transparent)
+
+        li.border
+            border-bottom none
+            margin-bottom 30px
+            padding-bottom 0
 
 Section#sermon-series
     #cards
