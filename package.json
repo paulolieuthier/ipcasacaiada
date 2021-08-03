@@ -1,0 +1,19 @@
+{
+  "name": "ipcasacaiada",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.1",
+    "@vue/compiler-sfc": "^3.0.5",
+    "stylus": "^0.54.8",
+    "vite": "^2.1.5"
+  }
+}
