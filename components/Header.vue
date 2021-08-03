@@ -28,12 +28,13 @@ export default {
 Section
     background #fff
     border-bottom 1px solid #ccc
-    border-top 8px solid #3069B3
+    border-top 5px solid #3069B3 !important
     box-shadow 0 0 2px 0 #aaa
     flex-flow row nowrap
     height 90px
     position fixed
     top 0
+    white-space nowrap
     z-index 1000
 
     #logo
