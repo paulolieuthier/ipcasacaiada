@@ -10,14 +10,16 @@
     </section>
 
     <Section id="intro" class="alternate spacing center">
-        <div id="message">
-            <span id="tagline">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-            <span id="subscript">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-        </div>
-        <div id="video">
-            <video controls>
-                <source src="assets/placeholder-intro.mp4" type="video/mp4" />
-            </video>
+        <div id="items">
+            <div id="message">
+                <span id="tagline">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                <span id="subscript">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+            </div>
+            <div id="video">
+                <video controls>
+                    <source src="assets/placeholder-intro.mp4" type="video/mp4" />
+                </video>
+            </div>
         </div>
     </Section>
 
@@ -253,9 +255,14 @@ Section#banners
             width 100%
 
 Section#intro
-    #message, #video
-        flex-grow 1
-        max-width 40%
+    #items
+        align-items center
+        display grid
+        grid-gap 40px
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 400px)}, 1fr))
+        justify-items center
+        padding 0 40px
+        width 100%
 
     #message
         display flex
@@ -274,6 +281,7 @@ Section#intro
             margin-top 20px
 
     #video
+        max-width 500px
         text-align center
 
         video
