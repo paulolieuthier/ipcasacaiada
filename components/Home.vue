@@ -387,7 +387,7 @@ Section#groups
     #cards
         display grid
         grid-auto-flow row dense
-        grid-template-columns repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 300px)}, 1fr));
         max-width 1920px
         width 100%
 
@@ -417,7 +417,7 @@ Section#contact #contact-row
     align-items start
     display grid
     grid-row-gap 40px
-    grid-template-columns repeat(auto-fit, minmax(400px, 1fr))
+    grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 400px)}, 1fr))
     justify-items center
     padding 30px 50px
     width 100%
@@ -503,12 +503,12 @@ Section#footer
     #footer-items
         display grid
         grid-gap 40px
-        grid-template-columns repeat(auto-fit, minmax(300px, 1fr))
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 300px)}, 1fr))
 
         #footer-secondary-items
             display grid
             grid-gap 40px
-            grid-template-columns repeat(auto-fit, minmax(200px, 1fr))
+            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 200px)}, 1fr))
 
             #item
                 font-weight 300
