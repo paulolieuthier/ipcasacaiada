@@ -1,5 +1,5 @@
 <template>
-    <Section flow="row">
+    <Section flow="row" class="light-gray">
         <div id="logo">
             <h1>Igreja Presbiteriana de Casa Caiada</h1>
             <div id="subtitle">Igreja Presbiteriana do Brasil</div>

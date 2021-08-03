@@ -37,6 +37,9 @@ export default {
     background #050505
     border: none
 
+.wrapper.light-gray
+    background #f9f9f9
+
 .wrapper.gray
     background #464646
 
