@@ -501,6 +501,9 @@ Section#footer
         grid-gap 40px
         grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 300px)}, 1fr))
 
+        #footer-main-item, #footer-secondary-items
+            padding 0 20px
+
         #footer-secondary-items
             display grid
             grid-gap 40px
