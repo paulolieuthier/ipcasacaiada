@@ -17,11 +17,11 @@
         </div>
     </Section>
 
-    <Section id="banners" class="fill gray">
+    <Section id="banners" class="fill gray borderless">
         <div id="images">
-            <img id="banner-1" src="assets/banners/banner-3.jpg">
-            <img id="banner-2" src="assets/banners/banner-2.jpg">
-            <img id="banner-3" src="assets/banners/banner-3.jpg">
+            <div class="image" style="background-image: url('assets/banners/banner-1.jpg')" />
+            <div class="image" style="background-image: url('assets/banners/banner-2.jpg')" />
+            <div class="image" style="background-image: url('assets/banners/banner-3.jpg')" />
         </div>
     </section>
 
@@ -332,10 +332,16 @@ Section#header
 Section#banners
     #images
         display grid
+        height 40vh
+        width 100%
 
-        img
+        .image
+            background-position center center
+            background-repeat no-repeat
+            background-size cover
             grid-column 1
             grid-row 1
+            height 100%
             width 100%
 
 Section#intro
