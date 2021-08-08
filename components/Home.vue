@@ -35,7 +35,7 @@
                         <p>{{ section.content }}</p>
                         <div class="buttons">
                             <template v-for="action in section.actions">
-                                <Button class="spacing-right">{{ action.text }}</Button>
+                                <Button>{{ action.text }}</Button>
                             </template>
                         </div>
                     </div>
