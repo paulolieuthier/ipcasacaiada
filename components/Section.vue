@@ -15,7 +15,7 @@ export default {
   
 <style scoped lang="stylus">
 .wrapper
-    border-top: 1px solid #ededed
+    border-top 1px solid #ededed
     display flex
     justify-content space-around
     width 100%
@@ -26,6 +26,9 @@ export default {
     #content
         max-width 1920px
         width 100%
+
+.wrapper.borderless
+    border-top none
 
 .wrapper.alternate
     background #fafafa

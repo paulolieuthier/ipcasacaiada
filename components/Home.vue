@@ -1,5 +1,21 @@
 <template>
-    <Header />
+    <Section id="header" flow="row" class="light-gray">
+        <div id="content">
+            <header>
+                <img src="assets/logo.png" />
+                <div id="title">
+                    <h1><span>Igreja Presbiteriana</span> <span>de Casa Caiada</span></h1>
+                    <h2>Igreja Presbiteriana do Brasil</h2>
+                </div>
+            </header>
+            <div id="menu-horizontal">
+                <MenuHorizontal />
+            </div>
+            <div id="menu-collapsible">
+                <MenuCollapsible />
+            </div>
+        </div>
+    </Section>
 
     <Section id="banners" class="fill gray">
         <div id="images">
@@ -171,6 +187,8 @@
 </template>
 
 <script>
+import MenuHorizontal from './MenuHorizontal.vue'
+import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
 import Button from './Button.vue'
 
@@ -178,6 +196,8 @@ export default {
     components: {
         Section,
         Button,
+        MenuHorizontal,
+        MenuCollapsible,
     },
     data: function () {
         return {
@@ -234,6 +254,80 @@ export default {
 <style scoped lang="stylus">
 .see-more
     margin-top 30px !important
+
+Section#header
+    border-bottom 1px solid #ccc
+    border-top 5px solid #3069B3 !important
+    box-shadow 0 0 2px 0 #aaa
+    height 90px
+    position fixed
+    top 0
+    z-index 1000
+
+    #content
+        align-items center
+        display flex
+        flex-flow row nowrap
+        height 100%
+        justify-content space-between
+        padding 0 10px
+        width 100%
+
+        header
+            display grid
+            grid-template-columns  55px 1fr
+            grid-template-rows  55px
+
+            img
+                height 100%
+
+            #title
+                display flex
+                flex-flow column nowrap
+                height 100%
+                justify-content center
+                padding-left 20px
+
+                h1
+                    /* font-size calc(13px + (25 - 13) * ((100vw - 360px) / (1920 - 360))) */
+                    font-size @css{min(26px, max(16px, 2vw))}
+                    margin 0
+                    padding 0
+
+                    span
+                        white-space nowrap
+
+                h2
+                    color #3069B3
+                    font-size @css{min(14px, max(12px, 1.4vw))}
+                    font-weight 600
+                    margin 0
+                    padding 0
+                    white-space nowrap
+
+    #menu-collapsible
+        display none
+        width 100%
+
+@media (max-width: 767px)
+    Section#header
+        height auto
+        position initial
+
+        #menu-horizontal
+            display none
+
+        #menu-collapsible
+            display block
+
+        #content
+            flex-flow column nowrap
+
+            header
+                padding 10px 0
+
+                #title h1 span
+                    white-space normal
 
 Section#banners
     #images

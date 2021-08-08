@@ -1,15 +1,12 @@
 <template>
-    <Header />
     <Home />
 </template>
   
 <script>
-import Header from './Header.vue'
 import Home from './Home.vue'
   
 export default {
     components: {
-        Header,
         Home
     } 
 } 
@@ -25,6 +22,9 @@ html, body
 body
     padding-top 88px
 
+@media (max-width: 767px)
+    body
+        padding-top 0
 
 *, *:before, *:after
     box-sizing border-box
