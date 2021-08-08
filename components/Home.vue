@@ -124,26 +124,34 @@
     <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
         <div id="contact-row">
             <div id="contact-info">
-                <i class="fab icon-large fa-whatsapp"></i>
-                <p>
-                    <span class="title">Whatsapp</span>
-                    <span class="subtitle">(81) 9319-6221</span>
-                </p>
-                <i class="fas icon-large fa-mobile-alt"></i>
-                <p>
-                    <span class="title">Telefone</span>
-                    <span class="subtitle">(81) 3432-3629</span>
-                </p>
-                <i class="fas icon-medium fa-map-marked-alt"></i>
-                <p>
-                    <span class="title">Localização</span>
-                    <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
-                </p>
-                <i class="fas icon-medium fa-envelope-open-text"></i>
-                <p>
-                    <span class="title">Email</span>
-                    <span class="subtitle">central.ipcc@gmail.com</span>
-                </p>
+                <a href="#">
+                    <i class="fab icon-large fa-whatsapp"></i>
+                    <p>
+                        <span class="title">Whatsapp</span>
+                        <span class="subtitle">(81) 9319-6221</span>
+                    </p>
+                </a>
+                <a href="#">
+                    <i class="fas icon-large fa-mobile-alt"></i>
+                    <p>
+                        <span class="title">Telefone</span>
+                        <span class="subtitle">(81) 3432-3629</span>
+                    </p>
+                </a>
+                <a href="#">
+                    <i class="fas icon-medium fa-map-marked-alt"></i>
+                    <p>
+                        <span class="title">Localização</span>
+                        <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
+                    </p>
+                </a>
+                <a href="#">
+                    <i class="fas icon-medium fa-envelope-open-text"></i>
+                    <p>
+                        <span class="title">Email</span>
+                        <span class="subtitle">central.ipcc@gmail.com</span>
+                    </p>
+                </a>
             </div>
             <div id="contact-form">
                 <input type="text" placeholder="Nome" />
@@ -531,36 +539,41 @@ Section#contact #contact-row
         min-width 70%
 
     #contact-info
-        align-items center
-        display grid
-        grid-column-gap 30px
-        grid-row-gap 40px
-        grid-template-columns min-content auto
+        display flex
+        flex-flow column nowrap
+        gap 40px
 
-        i
-            text-align center
+        a
+            align-items center
+            display grid
+            grid-column-gap 30px
+            grid-template-columns 60px auto
+            width 100%
 
-        i.icon-medium
-            font-size 2.8rem
+            i
+                text-align center
 
-        i.icon-large
-            font-size 3.5rem
+            i.icon-medium
+                font-size 2.8rem
 
-        p
-            display flex
-            flex-flow column nowrap
-            margin 0
+            i.icon-large
+                font-size 3.5rem
 
-            span
-                white-space nowrap
+            p
+                display flex
+                flex-flow column nowrap
+                margin 0
 
-            span.title
-                font-size 18px
+                span.title
+                    font-size 18px
 
-            span.subtitle
-                color #444
-                font-size 16px
-                margin-top 5px
+                span.subtitle
+                    color #444
+                    font-size 16px
+                    margin-top 5px
+
+        a:hover, a:hover span.subtitle
+            color #3069B3
 
     #contact-form
         background white
