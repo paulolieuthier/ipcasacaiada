@@ -63,14 +63,12 @@
     <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
         <div id="cards">
             <a v-for="sermon in sermons" id="card" href="#">
-                <div class="card">
-                    <div class="image-wrapper">
-                        <img :src="sermon.image" />
-                    </div>
-                    <template v-if="sermon.title">
-                        <span>{{ sermon.title }}</span>
-                    </template>
+                <div class="image-wrapper">
+                    <img :src="sermon.image" />
                 </div>
+                <template v-if="sermon.title">
+                    <span>{{ sermon.title }}</span>
+                </template>
             </a>
         </div>
         <Button class="see-more">Ver Todos</Button>
@@ -369,7 +367,7 @@ Section#intro
         text-align left
 
         #tagline
-            font-size 26px
+            font-size @css{min(26px, max(22px, 2vw))}
             font-weight 800
 
         #subscript
@@ -424,6 +422,7 @@ Section#about-us ul
 
             .buttons
                 display inline-flex
+                flex-flow row wrap
                 gap 20px
 
     li.alternate
@@ -448,7 +447,7 @@ Section#about-us ul
                 border-radius 0
                 height 200px
                 margin-bottom 30px
-                mask-image linear-gradient(to bottom, rgb(0, 0, 0) 75%, transparent)
+                mask-image linear-gradient(to bottom, transparent, rgb(0, 0, 0) 1%, rgb(0, 0, 0) 75%, transparent)
 
         li.border
             border-bottom none
@@ -459,35 +458,38 @@ Section#sermon-series
     #cards
         display grid
         grid-gap 50px
-        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 250px)}, 1fr))
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 180px)}, 1fr))
+        justify-items center
         padding 20px 50px
         width 100%
 
-        .card
+        #card
             align-items center
             display flex
             flex-flow column nowrap
+            max-width 300px
+            width 100%
 
-        .card .image-wrapper
+        #card .image-wrapper
             box-shadow 0 0 1px #000
             overflow hidden
             width 100%
 
-        .card img
+        #card img
             display block
             transition transform 0.2s
             width 100%
 
-        .card span
+        #card span
             font-weight 600
             margin 10px 0
             padding 10px 0
             position relative
 
-        .card:hover img
+        #card:hover img
             transform scale(1.1)
 
-        .card:hover span::after
+        #card:hover span::after
             background #3069B3
             bottom 2px
             content ''
@@ -500,7 +502,7 @@ Section#groups
     #cards
         display grid
         grid-auto-flow row dense
-        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 300px)}, 1fr));
+        grid-template-columns repeat(auto-fit, minmax(@css{min(80%, 240px)}, 1fr));
         max-width 1920px
         width 100%
 
@@ -639,4 +641,5 @@ Section#copyright
     font-size 15px
     font-weight 300
     padding 20px 0
+    text-align center
 </style>
