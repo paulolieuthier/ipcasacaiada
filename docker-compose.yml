@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  wordpress:
+    build: ./docker
+    ports:
+      - 8000:8000
+    depends_on:
+    - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: user
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: database
+      WORDPRESS_URL: http://localhost:8000
+    volumes:
+      - ./theme:/wordpress/wp-content/themes/ipcasacaiada
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: rootpassword
