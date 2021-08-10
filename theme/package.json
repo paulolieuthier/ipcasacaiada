@@ -1,0 +1,16 @@
+{
+  "name": "ipcasacaiada",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "parcel watch src/index.js",
+    "build": "parcel build src/index.js"
+  },
+  "devDependencies": {
+    "@parcel/transformer-vue": "^2.0.0-rc.0",
+    "parcel": "^2.0.0-rc.0",
+    "stylus": "^0.54.8"
+  },
+  "watchreload": {
+    "files": "**/*.php"
+  }
+}
