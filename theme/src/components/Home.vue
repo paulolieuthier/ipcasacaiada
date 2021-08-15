@@ -266,7 +266,7 @@ Section#header
     border-top 5px solid #3069B3 !important
     box-shadow 0 0 2px 0 #aaa
     height 90px
-    position fixed
+    position sticky
     top 0
     z-index 1000
 
