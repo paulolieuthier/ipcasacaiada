@@ -8,6 +8,7 @@
   "devDependencies": {
     "@parcel/transformer-vue": "^2.0.0-rc.0",
     "parcel": "^2.0.0-rc.0",
+    "parcel-plugin-watch-reload": "^1.0.3",
     "stylus": "^0.54.8"
   },
   "watchreload": {
