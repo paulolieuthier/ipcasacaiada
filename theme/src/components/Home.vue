@@ -4,8 +4,8 @@
             <header>
                 <img :src="asset('logo.png')" />
                 <div id="title">
-                    <h1><span>Igreja Presbiteriana</span> <span>de Casa Caiada</span></h1>
-                    <h2>Igreja Presbiteriana do Brasil</h2>
+                    <h1>{{ query.title }}</h1>
+                    <h2>{{ query.description }}</h2>
                 </div>
             </header>
             <div id="menu-horizontal">
@@ -23,7 +23,7 @@
             <div class="image" :style="`background-image: url('${asset('banners/banner-2.jpg')}')`" />
             <div class="image" :style="`background-image: url('${asset('banners/banner-3.jpg')}')`" />
         </div>
-    </section>
+    </Section>
 
     <Section id="intro" class="alternate spacing center">
         <div id="items">
@@ -198,6 +198,8 @@ import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
 import Button from './Button.vue'
 
+import gql from 'graphql-tag'
+
 export default {
     components: {
         Section,
@@ -205,8 +207,21 @@ export default {
         MenuHorizontal,
         MenuCollapsible,
     },
-    data: function () {
+    apollo: {
+        query: gql`query {
+            query: generalSettings {
+                title
+                description
+            }
+        }`,
+    },
+    data: function() {
         return {
+            // default initialization of queried data is necessary
+            query: {
+                title: '',
+                description: ''
+            },
             about: [
                 {
                     'title': 'No Que Cremos',
