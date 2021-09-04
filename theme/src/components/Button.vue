@@ -1,6 +1,12 @@
 <template>
-    <a class="button" href="#"><slot /></a>
+    <a class="button" :href="link ?? '#'"><slot /></a>
 </template>
+
+<script>
+export default {
+    props: ['link'],
+} 
+</script>
 
 <style scoped lang="stylus">
 .button
