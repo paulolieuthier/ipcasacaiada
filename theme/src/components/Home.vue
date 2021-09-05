@@ -433,7 +433,7 @@ Section#about-us ul
             h1
                 margin: 0
 
-            p
+            div
                 line-height 25px
                 padding 10px 0
 
