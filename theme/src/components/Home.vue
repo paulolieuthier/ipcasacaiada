@@ -62,14 +62,14 @@
 
     <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
         <div id="cards">
-            <a v-for="sermon in sermons" id="card" href="#">
-                <div class="image-wrapper">
-                    <img :src="asset(sermon.image)" />
-                </div>
-                <template v-if="sermon.title">
-                    <span>{{ sermon.title }}</span>
-                </template>
-            </a>
+            <template v-for="series in sermons">
+                <a id="card" :href="`/sermon-series/${series.slug}`">
+                    <div class="image-wrapper">
+                        <img :src="series.image" />
+                    </div>
+                    <span>{{ series.name }}</span>
+                </a>
+            </template>
         </div>
         <Button class="see-more">Ver Todos</Button>
     </Section>
@@ -218,12 +218,22 @@ export default {
                     socialFacebook,
                     socialSpotify,
                 }
+                sermons: sermonSeries {
+                    nodes {
+                        name
+                        slug
+                        count
+                        image
+                    }
+                }
+
             }`,
             manual: true,
             result: function({ data, loading }) {
                 if (!loading) {
                     this.site = data.site
                     this.theme = data.theme
+                    this.sermons = data.sermons.nodes
                 }
             },
         }
@@ -233,16 +243,7 @@ export default {
             // default initialization of root queried data is necessary
             site: {},
             theme: {},
-            sermons: [
-                { title: 'Atos', image: 'sermons/series-1.jpg' },
-                { title: '1 Coríntios', image: 'sermons/series-2.jpg' },
-                { title: '2 Coríntios', image: 'sermons/series-3.jpg' },
-                { title: 'Eclesiastes', image: 'sermons/series-4.jpg' },
-                { title: 'Apocalipse', image: 'sermons/series-5.jpg' },
-                { title: 'Sermão Profético', image: 'sermons/series-6.jpg' },
-                { title: 'Romanos', image: 'sermons/series-7.jpg' },
-                { title: 'Salmos', image: 'sermons/series-8.jpg' },
-            ]
+            sermons: {},
         }
     },
     computed: {
