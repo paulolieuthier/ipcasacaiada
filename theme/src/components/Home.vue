@@ -1,157 +1,167 @@
 <template>
-    <Section id="header" flow="row" class="light-gray">
-        <div id="content">
-            <header>
-                <img :src="theme.logo" />
-                <div id="title">
-                    <h1>{{ site.title }}</h1>
-                    <h2>{{ site.description }}</h2>
-                </div>
-            </header>
-            <div id="menu-horizontal">
-                <MenuHorizontal />
-            </div>
-            <div id="menu-collapsible">
-                <MenuCollapsible />
-            </div>
-        </div>
-    </Section>
-
-    <Section id="banners" class="fill gray borderless">
-        <div id="images">
-            <template v-for="banner in theme.banners">
-                <a :href="banner.page[0]?.uri" class="image" :style="`background-image: url('${banner.image}')`" />
-            </template>
-        </div>
-    </Section>
-
-    <Section id="intro" class="alternate spacing center">
-        <div id="items">
-            <div id="message">
-                <span id="tagline">{{ theme.welcomeTitle }}</span>
-                <span id="subscript">{{ theme.welcomeSubtitle }}</span>
-            </div>
-            <div id="video">
-                <video controls :src="theme.welcomeVideo">
-                    <source :src="theme.welcomeVideo" type="video/mp4" />
-                </video>
-            </div>
-        </div>
-    </Section>
-
-    <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
-        <ul>
-            <template v-for="(section, index) in theme.aboutUs">
-                <li :class="{ alternate: index % 2, border: index < theme.aboutUs.length - 1 }">
-                    <div class="card">
-                        <img :src="section.image" />
+    <template v-if="!loading">
+        <Section id="header" flow="row" class="light-gray">
+            <div id="content">
+                <header>
+                    <img :src="data.logo" />
+                    <div id="title">
+                        <h1>{{ data.title }}</h1>
+                        <h2>{{ data.subtitle }}</h2>
                     </div>
-                    <div class="content">
-                        <h1>{{ section.title }}</h1>
-                        <div v-html="section.content" />
-                        <div class="buttons">
-                            <template v-for="action in section.actions">
-                                <Button :link="action.page[0]?.uri">{{ action.text }}</Button>
-                            </template>
+                </header>
+                <div id="menu-horizontal">
+                    <MenuHorizontal />
+                </div>
+                <div id="menu-collapsible">
+                    <MenuCollapsible />
+                </div>
+            </div>
+        </Section>
+
+        <Section id="banners" class="fill gray borderless">
+            <div id="images">
+                <template v-for="banner in data.banners">
+                    <a :href="banner.uri" class="image" :style="`background-image: url('${banner.image}')`" />
+                </template>
+            </div>
+        </Section>
+
+        <Section id="intro" class="alternate spacing center">
+            <div id="items">
+                <div id="message">
+                    <span id="tagline">{{ data.welcome.title }}</span>
+                    <span id="subscript">{{ data.welcome.subtitle }}</span>
+                </div>
+                <div id="video">
+                    <video controls :src="data.welcome.video">
+                        <source :src="data.welcome.video" type="video/mp4" />
+                    </video>
+                </div>
+            </div>
+        </Section>
+
+        <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
+            <ul>
+                <template v-for="(section, index) in data.aboutUs">
+                    <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
+                        <div class="card">
+                            <img :src="section.image" />
                         </div>
-                    </div>
-                </li>
-            </template>
-        </ul>
-    </Section>
+                        <div class="content">
+                            <h1>{{ section.title }}</h1>
+                            <div v-html="section.content" />
+                            <div class="buttons">
+                                <template v-for="button in section.buttons">
+                                    <Button :link="button.uri">{{ button.text }}</Button>
+                                </template>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </Section>
 
-    <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
-        <div id="cards">
-            <template v-for="series in sermons">
-                <a id="card" :href="`/sermon-series/${series.slug}`">
-                    <div class="image-wrapper">
-                        <img :src="series.image" />
-                    </div>
-                    <span>{{ series.name }}</span>
-                </a>
-            </template>
-        </div>
-        <Button class="see-more">Ver Todos</Button>
-    </Section>
-
-    <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
-        <div id="cards">
-            <template v-for="group in theme.groups">
-                <a :href="group.page[0]?.uri" class="card">
-                    <img :src="group.image">
-                    <span>{{group.name}}</span>
-                </a>
-            </template>
-        </div>
-    </Section>
-
-    <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
-        <div id="contact-row">
-            <div id="contact-info">
-                <a :href="whatsappLink" target="_blank">
-                    <i class="fab icon-large fa-whatsapp"></i>
-                    <p>
-                        <span class="title">Whatsapp</span>
-                        <span class="subtitle">{{ theme.contactWhatsapp }}</span>
-                    </p>
-                </a>
-                <a :href="phoneLink" target="_blank">
-                    <i class="fas icon-large fa-mobile-alt"></i>
-                    <p>
-                        <span class="title">Telefone</span>
-                        <span class="subtitle">{{ theme.contactPhone }}</span>
-                    </p>
-                </a>
-                <a :href="locationLink" target="_blank">
-                    <i class="fas icon-medium fa-map-marked-alt"></i>
-                    <p>
-                        <span class="title">Localização</span>
-                        <span class="subtitle">{{ theme.contactLocation }}</span>
-                    </p>
-                </a>
-                <a :href="emailLink" target="_blank">
-                    <i class="fas icon-medium fa-envelope-open-text"></i>
-                    <p>
-                        <span class="title">Email</span>
-                        <span class="subtitle">{{ theme.contactEmail }}</span>
-                    </p>
-                </a>
+        <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
+            <div id="cards">
+                <template v-for="series in data.sermons">
+                    <a id="card" :href="`/sermon-series/${series.slug}`">
+                        <div class="image-wrapper">
+                            <img :src="series.image" />
+                        </div>
+                        <span>{{ series.name }}</span>
+                    </a>
+                </template>
             </div>
-            <div id="contact-form">
-                <input type="text" placeholder="Nome" />
-                <input type="text" placeholder="Email" />
-                <input type="text" placeholder="Telefone" />
-                <textarea type="text" placeholder="Mensagem" rows="3"></textarea>
-                <input type="submit" value="Enviar" />
-            </div>
-        </div>
-    </Section>
+            <Button class="see-more">Ver Todos</Button>
+        </Section>
 
-    <Section id="footer" class="dark">
-        <div id="footer-items">
-            <div id="footer-main-item">
-                <h3>{{ theme.footerFirstTitle }}</h3>
-                {{ theme.footerFirst }}
+        <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
+            <div id="cards">
+                <template v-for="group in data.groups">
+                    <a :href="`/ministerios/${group.slug}`" class="card">
+                        <img :src="group.image">
+                        <span>{{group.name}}</span>
+                    </a>
+                </template>
             </div>
-            <div id="footer-secondary-items">
-                <div id="item">
-                    <h3>{{ theme.footerSecondTitle }}</h3>
-                    {{ theme.footerSecond }}
+        </Section>
+
+        <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
+            <div id="contact-row">
+                <div id="contact-info">
+                    <a :href="whatsappLink" target="_blank">
+                        <i class="fab icon-large fa-whatsapp"></i>
+                        <p>
+                            <span class="title">Whatsapp</span>
+                            <span class="subtitle">{{ data.contact.whatsapp }}</span>
+                        </p>
+                    </a>
+                    <a :href="phoneLink" target="_blank">
+                        <i class="fas icon-large fa-mobile-alt"></i>
+                        <p>
+                            <span class="title">Telefone</span>
+                            <span class="subtitle">{{ data.contact.phone }}</span>
+                        </p>
+                    </a>
+                    <a :href="locationLink" target="_blank">
+                        <i class="fas icon-medium fa-map-marked-alt"></i>
+                        <p>
+                            <span class="title">Localização</span>
+                            <span class="subtitle">{{ data.contact.location }}</span>
+                        </p>
+                    </a>
+                    <a :href="emailLink" target="_blank">
+                        <i class="fas icon-medium fa-envelope-open-text"></i>
+                        <p>
+                            <span class="title">Email</span>
+                            <span class="subtitle">{{ data.contact.email }}</span>
+                        </p>
+                    </a>
                 </div>
-                <div id="item">
-                    <h3>Redes Sociais</h3>
-                    <a v-if="theme.socialYoutube" :href="theme.socialYoutube"><i class="fab fa-youtube"></i></a>
-                    <a v-if="theme.socialInstagram" :href="theme.socialInstagram"><i class="fab fa-instagram"></i></a>
-                    <a v-if="theme.socialFacebook" :href="theme.socialFacebook"><i class="fab fa-facebook"></i></a>
-                    <a v-if="theme.socialSpotify" :href="theme.socialSpotify"><i class="fab fa-spotify"></i></a>
+                <div id="contact-form">
+                    <input type="text" placeholder="Nome" />
+                    <input type="text" placeholder="Email" />
+                    <input type="text" placeholder="Telefone" />
+                    <textarea type="text" placeholder="Mensagem" rows="3"></textarea>
+                    <input type="submit" value="Enviar" />
                 </div>
             </div>
-        </div>
-    </Section>
+        </Section>
 
-    <Section id="copyright" class="darker center">
-        {{ site.title }}
-    </Section>
+        <Section id="footer" class="dark">
+            <div id="footer-items">
+                <div id="footer-main-item">
+                    <h3>{{ data.footer.first.title }}</h3>
+                    {{ data.footer.first.content }}
+                </div>
+                <div id="footer-secondary-items">
+                    <div id="item">
+                        <h3>{{ data.footer.second.title }}</h3>
+                        {{ data.footer.second.content }}
+                    </div>
+                    <div id="item">
+                        <h3>Redes Sociais</h3>
+                        <a v-if="data.footer.social.youtube" :href="data.footer.social.youtube">
+                            <i class="fab fa-youtube" />
+                        </a>
+                        <a v-if="data.footer.social.instagram" :href="data.footer.social.instagram">
+                            <i class="fab fa-instagram" />
+                        </a>
+                        <a v-if="data.footer.social.facebook" :href="data.footer.social.facebook">
+                            <i class="fab fa-facebook" />
+                        </a>
+                        <a v-if="data.footer.social.spotify" :href="data.footer.social.spotify">
+                            <i class="fab fa-spotify" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </Section>
+
+        <Section id="copyright" class="darker center">
+            {{ data.title }}
+        </Section>
+    </template>
 </template>
 
 <script>
@@ -160,7 +170,7 @@ import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
 import Button from './Button.vue'
 
-import gql from 'graphql-tag'
+import Querier from '../querier.js'
 
 export default {
     components: {
@@ -169,105 +179,29 @@ export default {
         MenuHorizontal,
         MenuCollapsible,
     },
-    apollo: {
-        query: {
-            query: gql`query {
-                site: generalSettings {
-                    title
-                    description
-                }
-                theme: crbThemeOptions {
-                    logo
-                    welcomeTitle
-                    welcomeSubtitle
-                    welcomeVideo
-                    banners {
-                        image
-                        page {
-                            uri
-                        }
-                    }
-                    aboutUs {
-                        title
-                        content
-                        image
-                        actions {
-                            text
-                            page {
-                                uri
-                            }
-                        }
-                    }
-                    groups {
-                        name
-                        image
-                        page {
-                            uri
-                        }
-                    }
-                    contactWhatsapp,
-                    contactPhone,
-                    contactLocation,
-                    contactEmail,
-                    footerFirstTitle,
-                    footerFirst,
-                    footerSecondTitle,
-                    footerSecond,
-                    socialYoutube,
-                    socialInstagram,
-                    socialFacebook,
-                    socialSpotify,
-                }
-                sermons: sermonSeries {
-                    nodes {
-                        name
-                        slug
-                        count
-                        image
-                    }
-                }
-
-            }`,
-            manual: true,
-            result: function({ data, loading }) {
-                if (!loading) {
-                    this.site = data.site
-                    this.theme = data.theme
-                    this.sermons = data.sermons.nodes
-                }
-            },
-        }
-    },
-    data: function() {
-        return {
-            // default initialization of root queried data is necessary
-            site: {},
-            theme: {},
-            sermons: {},
-        }
-    },
+    setup: () => Querier.home(),
     computed: {
         whatsappLink: function() {
-            if (this.theme.contactWhatsapp) {
-                const whatsapp = this.theme.contactWhatsapp.replaceAll(/[^0-9]+/g, '')
+            if (this.data.contact.whatsapp) {
+                const whatsapp = this.data.contact.whatsapp.replaceAll(/[^0-9]+/g, '')
                 return 'https://api.whatsapp.com/send?phone=+55' + whatsapp
             }
         },
         phoneLink: function() {
-            if (this.theme.contactPhone) {
-                const phone = this.theme.contactPhone.replaceAll(/[^0-9]+/g, '')
+            if (this.data.contact.phone) {
+                const phone = this.data.contact.phone.replaceAll(/[^0-9]+/g, '')
                 return 'tel:+55' + phone
             }
         },
         locationLink: function() {
-            if (this.theme.contactLocation) {
-                const location = this.theme.contactLocation.replaceAll(/\s+/g, ' ')
+            if (this.data.contact.location) {
+                const location = this.data.contact.location.replaceAll(/\s+/g, ' ')
                 return 'https://www.google.com/maps/search/?api=1&query=' + encodeURI(location)
             }
         },
         emailLink: function() {
-            if (this.theme.contactEmail) {
-                const email = this.theme.contactEmail.trim()
+            if (this.data.contact.email) {
+                const email = this.data.contact.email.trim()
                 return 'mailto:' + email
             }
         }
