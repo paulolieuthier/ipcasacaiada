@@ -1,5 +1,6 @@
 <template>
     <template v-if="!loading">
+        <a class="anchor" id="inicio" ref="inicio" />
         <Section id="header" flow="row" class="light-gray">
             <div id="content">
                 <header>
@@ -10,7 +11,7 @@
                     </div>
                 </header>
                 <div id="menu-horizontal">
-                    <MenuHorizontal />
+                    <MenuHorizontal ref="menu" />
                 </div>
                 <div id="menu-collapsible">
                     <MenuCollapsible />
@@ -40,13 +41,12 @@
             </div>
         </Section>
 
+        <a class="anchor" id="sobre-nos" ref="sobre-nos" />
         <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
             <ul>
                 <template v-for="(section, index) in data.aboutUs">
                     <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
-                        <div class="card">
-                            <img :src="section.image" />
-                        </div>
+                        <div class="card" :style="`background-image: url('${section.image}')`" />
                         <div class="content">
                             <h1>{{ section.title }}</h1>
                             <div v-html="section.content" />
@@ -61,6 +61,7 @@
             </ul>
         </Section>
 
+        <a class="anchor" id="sermoes" ref="sermoes" />
         <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
             <div id="cards">
                 <template v-for="series in data.sermons">
@@ -75,6 +76,7 @@
             <Button class="see-more">Ver Todos</Button>
         </Section>
 
+        <a class="anchor" id="ministerios" ref="ministerios" />
         <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
             <div id="cards">
                 <template v-for="group in data.groups">
@@ -86,6 +88,7 @@
             </div>
         </Section>
 
+        <a class="anchor" id="contato" ref="contato" />
         <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
             <div id="contact-row">
                 <div id="contact-info">
@@ -170,6 +173,7 @@ import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
 import Button from './Button.vue'
 
+import { ref } from 'vue'
 import Querier from '../querier.js'
 
 export default {
@@ -179,31 +183,78 @@ export default {
         MenuHorizontal,
         MenuCollapsible,
     },
-    setup: () => Querier.home(),
+    setup() {
+        const { loading, data } = Querier.home()
+
+        return {
+            // anchors
+            inicio: ref(null),
+            'sobre-nos': ref(null),
+            sermoes: ref(null),
+            ministerios: ref(null),
+            contato: ref(null),
+
+            menu: ref(null),
+            loading,
+            data
+        }
+    },
+    watch: {
+        loading(isLoading) {
+            if (!isLoading) {
+                // trigger scroll to correct section
+                // can't make it work without a timer
+                this.$nextTick(() => setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400))
+
+                window.addEventListener('scroll', this.updateMenu)
+            }
+        }
+    },
     computed: {
-        whatsappLink: function() {
+        anchors() {
+            return {
+                inicio: this.$refs.inicio,
+                'sobre-nos': this.$refs['sobre-nos'],
+                sermoes: this.$refs.sermoes,
+                ministerios: this.$refs.ministerios,
+                contato: this.$refs.contato,
+            }
+        },
+        whatsappLink() {
             if (this.data.contact.whatsapp) {
                 const whatsapp = this.data.contact.whatsapp.replaceAll(/[^0-9]+/g, '')
                 return 'https://api.whatsapp.com/send?phone=+55' + whatsapp
             }
         },
-        phoneLink: function() {
+        phoneLink() {
             if (this.data.contact.phone) {
                 const phone = this.data.contact.phone.replaceAll(/[^0-9]+/g, '')
                 return 'tel:+55' + phone
             }
         },
-        locationLink: function() {
+        locationLink() {
             if (this.data.contact.location) {
                 const location = this.data.contact.location.replaceAll(/\s+/g, ' ')
                 return 'https://www.google.com/maps/search/?api=1&query=' + encodeURI(location)
             }
         },
-        emailLink: function() {
+        emailLink() {
             if (this.data.contact.email) {
                 const email = this.data.contact.email.trim()
                 return 'mailto:' + email
             }
+        }
+    },
+    methods: {
+        updateMenu(event) {
+            let item = null;
+            for (let anchor in this.anchors) {
+                const rect = this.anchors[anchor].getBoundingClientRect()
+                if (rect.top < (window.innerHeight || document.documentElement.clientHeight) / 2) {
+                    item = anchor
+                }
+            }
+            this.$refs.menu.activate(item)
         }
     }
 }
@@ -212,6 +263,10 @@ export default {
 <style scoped lang="stylus">
 .see-more
     margin-top 30px !important
+
+a.anchor
+    position relative
+    top -50px
 
 Section#header
     border-bottom 1px solid #ccc
@@ -329,10 +384,13 @@ Section#intro
             margin-top 20px
 
     #video
+        aspect-ratio 16/9
         max-width 500px
         text-align center
+        width 100%
 
         video
+            height 100%
             width 100%
 
 Section#about-us ul
@@ -351,16 +409,13 @@ Section#about-us ul
         width 100%
 
         .card
+            background-position center
+            background-repeat no-repeat
+            background-size cover
             border-radius 3px 0 0 3px
             display flex
             mask-image linear-gradient(to right, rgb(0, 0, 0) 75%, transparent)
             min-width 30%
-
-            img
-                min-height 100%
-                min-width 100%
-                object-fit cover
-                object-position center
 
         .content
             padding 10px 20px 10px 40px

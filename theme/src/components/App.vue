@@ -14,9 +14,12 @@ export default {
   
 <style lang="stylus">
 html, body
-    color black
     margin 0
     padding 0
+    scroll-behavior smooth
+
+body
+    color black
     font-family 'Montserrat', 'sans-serif'
 
 *, *:before, *:after
