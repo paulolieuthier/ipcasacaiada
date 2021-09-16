@@ -20,11 +20,9 @@
         </Section>
 
         <Section id="banners" class="fill gray borderless">
-            <div id="images">
-                <template v-for="banner in data.banners">
-                    <a :href="banner.uri" class="image" :style="`background-image: url('${banner.image}')`" />
-                </template>
-            </div>
+            <Carousel>
+                <a v-for="banner in data.banners" class="banner" :href="banner.uri" :style="`background-image: url('${banner.image}')`" />
+            </Carousel>
         </Section>
 
         <Section id="intro" class="alternate spacing center">
@@ -171,6 +169,7 @@
 import MenuHorizontal from './MenuHorizontal.vue'
 import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
+import Carousel from './Carousel.vue'
 import Button from './Button.vue'
 
 import { ref } from 'vue'
@@ -179,6 +178,7 @@ import Querier from '../querier.js'
 export default {
     components: {
         Section,
+        Carousel,
         Button,
         MenuHorizontal,
         MenuCollapsible,
@@ -202,11 +202,13 @@ export default {
     watch: {
         loading(isLoading) {
             if (!isLoading) {
-                // trigger scroll to correct section
-                // can't make it work without a timer
-                this.$nextTick(() => setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400))
+                this.$nextTick(() => {
+                    // trigger scroll to correct section
+                    // can't make it work without a timer
+                    setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400)
 
-                window.addEventListener('scroll', this.updateMenu)
+                    window.addEventListener('scroll', this.updateMenu)
+                })
             }
         }
     },
@@ -302,7 +304,6 @@ Section#header
                 padding-left 20px
 
                 h1
-                    /* font-size calc(13px + (25 - 13) * ((100vw - 360px) / (1920 - 360))) */
                     font-size @css{min(26px, max(16px, 2vw))}
                     margin 0
                     padding 0
@@ -343,19 +344,11 @@ Section#header
                     white-space normal
 
 Section#banners
-    #images
-        display grid
-        height 40vh
-        width 100%
+    height 300px
 
-        .image
-            background-position center center
-            background-repeat no-repeat
-            background-size cover
-            grid-column 1
-            grid-row 1
-            height 100%
-            width 100%
+    .banner
+        background-position center center
+        background-size cover
 
 Section#intro
     #items
