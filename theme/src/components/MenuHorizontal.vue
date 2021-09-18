@@ -1,10 +1,10 @@
 <template>
     <nav>
-        <a ref="inicio" class="selected" href="#inicio">Início</a>
-        <a ref="sobre-nos" href="#sobre-nos">Sobre Nós</a>
-        <a ref="sermoes" href="#sermoes">Sermões</a>
-        <a ref="ministerios" href="#ministerios">Ministérios</a>
-        <a ref="contato" href="#contato">Contato</a>
+        <a ref="inicio" class="selected" href="/#inicio">Início</a>
+        <a ref="sobre-nos" href="/#sobre-nos">Sobre Nós</a>
+        <a ref="sermoes" href="/#sermoes">Sermões</a>
+        <a ref="ministerios" href="/#ministerios">Ministérios</a>
+        <a ref="contato" href="/#contato">Contato</a>
     </nav>
 </template>
 

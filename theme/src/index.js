@@ -1,15 +1,24 @@
-import { createApp, provide, h } from 'vue'
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import * as Vue from 'vue'
+import * as VueRouter from 'vue-router'
+import * as Apollo from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
+
 import App from './components/App.vue'
+import Home from './components/Home.vue'
 
-const apolloClient = new ApolloClient({
-  link: createHttpLink({ uri: `/graphql` }),
-  cache: new InMemoryCache(),
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHistory(),
+  routes: [
+    { path: '/', component: Home, },
+  ],
 })
 
-createApp({
-  setup: () => provide(DefaultApolloClient, apolloClient),
-  render: () => h(App),
+const apolloClient = new Apollo.ApolloClient({
+  link: Apollo.createHttpLink({ uri: `/graphql` }),
+  cache: new Apollo.InMemoryCache(),
 })
-.mount('#app')
+
+Vue.createApp(App)
+  .use(router)
+  .provide(DefaultApolloClient, apolloClient)
+  .mount('#app')
