@@ -21,7 +21,9 @@
 
         <Section id="banners" class="fill gray borderless">
             <Carousel>
-                <a v-for="banner in data.banners" class="banner" :href="banner.uri" :style="`background-image: url('${banner.image}')`" />
+                <template v-for="banner in data.banners" :key="banner.image">
+                    <a class="banner" :href="banner.uri" :style="`background-image: url('${banner.image}')`" />
+                </template>
             </Carousel>
         </Section>
 
@@ -42,14 +44,14 @@
         <a class="anchor" id="sobre-nos" ref="sobre-nos" />
         <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
             <ul>
-                <template v-for="(section, index) in data.aboutUs">
+                <template v-for="(section, index) in data.aboutUs" :key="section.title">
                     <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
                         <div class="card" :style="`background-image: url('${section.image}')`" />
                         <div class="content">
                             <h1>{{ section.title }}</h1>
                             <div v-html="section.content" />
                             <div class="buttons">
-                                <template v-for="button in section.buttons">
+                                <template v-for="button in section.buttons" :key="button.uri">
                                     <Button :link="button.uri">{{ button.text }}</Button>
                                 </template>
                             </div>
@@ -62,7 +64,7 @@
         <a class="anchor" id="sermoes" ref="sermoes" />
         <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
             <div id="cards">
-                <template v-for="series in data.sermons">
+                <template v-for="series in data.sermons" :key="series.slug">
                     <a id="card" :href="`/sermon-series/${series.slug}`">
                         <div class="image-wrapper">
                             <img :src="series.image" />
@@ -77,9 +79,9 @@
         <a class="anchor" id="ministerios" ref="ministerios" />
         <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
             <div id="cards">
-                <template v-for="group in data.groups">
+                <template v-for="group in data.groups" :key="group.slug">
                     <a :href="`/ministerios/${group.slug}`" class="card">
-                        <img :src="group.image">
+                        <img :src="group.image" />
                         <span>{{group.name}}</span>
                     </a>
                 </template>
