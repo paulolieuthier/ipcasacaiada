@@ -6,3 +6,4 @@ dist-ssr
 *.local
 .parcel-cache
 .cache
+vetur.config.js
