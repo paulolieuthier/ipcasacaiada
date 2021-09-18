@@ -119,13 +119,11 @@
                         </p>
                     </a>
                 </div>
-                <div id="contact-form">
-                    <input type="text" placeholder="Nome" />
-                    <input type="text" placeholder="Email" />
-                    <input type="text" placeholder="Telefone" />
-                    <textarea type="text" placeholder="Mensagem" rows="3"></textarea>
-                    <input type="submit" value="Enviar" />
-                </div>
+                <form id="contact-form" ref="contact">
+                    <input type="text" id="contact-name" placeholder="Nome" />
+                    <textarea type="text" id="contact-message" placeholder="Mensagem" rows="6"></textarea>
+                    <input type="submit" value="Enviar pelo Whatsapp" />
+                </form>
             </div>
         </Section>
 
@@ -195,6 +193,8 @@ export default {
             contato: ref(null),
 
             menu: ref(null),
+            contact: ref(null),
+
             loading,
             data
         }
@@ -207,6 +207,7 @@ export default {
                     // can't make it work without a timer
                     setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400)
 
+                    this.contact.addEventListener('submit', this.onContact)
                     window.addEventListener('scroll', this.updateMenu)
                 })
             }
@@ -222,11 +223,13 @@ export default {
                 contato: this.$refs.contato,
             }
         },
-        whatsappLink() {
+        whatsappNumber() {
             if (this.data.contact.whatsapp) {
-                const whatsapp = this.data.contact.whatsapp.replaceAll(/[^0-9]+/g, '')
-                return 'https://api.whatsapp.com/send?phone=+55' + whatsapp
+                return this.data.contact.whatsapp.replaceAll(/[^0-9]+/g, '')
             }
+        },
+        whatsappLink() {
+            return this.buildWhatsappLink()
         },
         phoneLink() {
             if (this.data.contact.phone) {
@@ -248,6 +251,15 @@ export default {
         }
     },
     methods: {
+        buildWhatsappLink(message) {
+            if (this.whatsappNumber) {
+                let link = 'https://api.whatsapp.com/send?lang=pt_br&phone=+55' + this.whatsappNumber
+                if (message) {
+                    link += '&text=' + encodeURI(message)
+                }
+                return link
+            }
+        },
         updateMenu(event) {
             let item = null;
             for (let anchor in this.anchors) {
@@ -257,6 +269,13 @@ export default {
                 }
             }
             this.$refs.menu.activate(item)
+        },
+        onContact(event) {
+            event.preventDefault()
+            const name = this.contact.querySelector('input#contact-name').value
+            const message = this.contact.querySelector('textarea#contact-message').value
+            const link = this.buildWhatsappLink(`Olá, sou ${name}. ${message}`)
+            window.open(link, '_blank').focus()
         }
     }
 }
