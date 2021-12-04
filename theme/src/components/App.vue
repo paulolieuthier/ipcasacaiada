@@ -19,13 +19,6 @@ html, body
     padding 0
     font-family 'Montserrat', 'sans-serif'
 
-body
-    padding-top 88px
-
-@media (max-width: 767px)
-    body
-        padding-top 0
-
 *, *:before, *:after
     box-sizing border-box
     text-decoration none

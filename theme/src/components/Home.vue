@@ -2,7 +2,7 @@
     <Section id="header" flow="row" class="light-gray">
         <div id="content">
             <header>
-                <img src="assets/logo.png" />
+                <img :src="asset('logo.png')" />
                 <div id="title">
                     <h1><span>Igreja Presbiteriana</span> <span>de Casa Caiada</span></h1>
                     <h2>Igreja Presbiteriana do Brasil</h2>
@@ -19,9 +19,9 @@
 
     <Section id="banners" class="fill gray borderless">
         <div id="images">
-            <div class="image" style="background-image: url('assets/banners/banner-1.jpg')" />
-            <div class="image" style="background-image: url('assets/banners/banner-2.jpg')" />
-            <div class="image" style="background-image: url('assets/banners/banner-3.jpg')" />
+            <div class="image" :style="`background-image: url('${asset('banners/banner-1.jpg')}')`" />
+            <div class="image" :style="`background-image: url('${asset('banners/banner-2.jpg')}')`" />
+            <div class="image" :style="`background-image: url('${asset('banners/banner-3.jpg')}')`" />
         </div>
     </section>
 
@@ -33,7 +33,7 @@
             </div>
             <div id="video">
                 <video controls>
-                    <source src="assets/placeholder-intro.mp4" type="video/mp4" />
+                    <source :src="asset('placeholder-intro.mp4')" type="video/mp4" />
                 </video>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <template v-for="(section, index) in about">
                 <li :class="{ alternate: index % 2, border: index < about.length - 1 }">
                     <div class="card">
-                        <img :src="section.image" />
+                        <img :src="asset(section.image)" />
                     </div>
                     <div class="content">
                         <h1>{{ section.title }}</h1>
@@ -64,7 +64,7 @@
         <div id="cards">
             <a v-for="sermon in sermons" id="card" href="#">
                 <div class="image-wrapper">
-                    <img :src="sermon.image" />
+                    <img :src="asset(sermon.image)" />
                 </div>
                 <template v-if="sermon.title">
                     <span>{{ sermon.title }}</span>
@@ -77,43 +77,43 @@
     <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
         <div id="cards">
             <a href="#" class="card">
-                <img src="assets/groups/square-1.jpg">
+                <img :src="asset('groups/square-1.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-2.jpg">
+                <img :src="asset('groups/square-2.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-3.jpg">
+                <img :src="asset('groups/square-3.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-4.jpg">
+                <img :src="asset('groups/square-4.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-5.jpg">
+                <img :src="asset('groups/square-5.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-1.jpg">
+                <img :src="asset('groups/square-1.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-2.jpg">
+                <img :src="asset('groups/square-2.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-3.jpg">
+                <img :src="asset('groups/square-3.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-4.jpg">
+                <img :src="asset('groups/square-4.jpg')">
                 <span>Ministério</span>
             </a>
             <a href="#" class="card">
-                <img src="assets/groups/square-5.jpg">
+                <img :src="asset('groups/square-5.jpg')">
                 <span>Ministério</span>
             </a>
         </div>
@@ -210,7 +210,7 @@ export default {
             about: [
                 {
                     'title': 'No Que Cremos',
-                    'image': 'assets/about/about-1.jpg',
+                    'image': 'about/about-1.jpg',
                     'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     'actions': [
                         { 'text': 'Documentos de fé' }
@@ -218,7 +218,7 @@ export default {
                 },
                 {
                     'title': 'Onde Estamos?',
-                    'image': 'assets/about/about-2.jpg',
+                    'image': 'about/about-2.jpg',
                     'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     'actions': [
                         { 'text': 'Ver mapa' }
@@ -226,7 +226,7 @@ export default {
                 },
                 {
                     'title': 'A IPCC',
-                    'image': 'assets/about/about-3.jpg',
+                    'image': 'about/about-3.jpg',
                     'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     'actions': [
                         { 'text': 'Nossa história' },
@@ -235,7 +235,7 @@ export default {
                 },
                 {
                     'title': 'Envolva-se',
-                    'image': 'assets/about/about-4.jpg',
+                    'image': 'about/about-4.jpg',
                     'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     'actions': [
                         { 'text': 'Ver mais' }
@@ -243,14 +243,14 @@ export default {
                 }
             ],
             sermons: [
-                { title: 'Atos', image: 'assets/sermons/series-1.jpg' },
-                { title: '1 Coríntios', image: 'assets/sermons/series-2.jpg' },
-                { title: '2 Coríntios', image: 'assets/sermons/series-3.jpg' },
-                { title: 'Eclesiastes', image: 'assets/sermons/series-4.jpg' },
-                { title: 'Apocalipse', image: 'assets/sermons/series-5.jpg' },
-                { title: 'Sermão Profético', image: 'assets/sermons/series-6.jpg' },
-                { title: 'Romanos', image: 'assets/sermons/series-7.jpg' },
-                { title: 'Salmos', image: 'assets/sermons/series-8.jpg' },
+                { title: 'Atos', image: 'sermons/series-1.jpg' },
+                { title: '1 Coríntios', image: 'sermons/series-2.jpg' },
+                { title: '2 Coríntios', image: 'sermons/series-3.jpg' },
+                { title: 'Eclesiastes', image: 'sermons/series-4.jpg' },
+                { title: 'Apocalipse', image: 'sermons/series-5.jpg' },
+                { title: 'Sermão Profético', image: 'sermons/series-6.jpg' },
+                { title: 'Romanos', image: 'sermons/series-7.jpg' },
+                { title: 'Salmos', image: 'sermons/series-8.jpg' },
             ]
         }
     }
@@ -266,7 +266,7 @@ Section#header
     border-top 5px solid #3069B3 !important
     box-shadow 0 0 2px 0 #aaa
     height 90px
-    position fixed
+    position sticky
     top 0
     z-index 1000
 
