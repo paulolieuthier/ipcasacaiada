@@ -1,23 +1,41 @@
 <template>
-    <Header />
+    <Section id="header" flow="row" class="light-gray">
+        <div id="content">
+            <header>
+                <img src="assets/logo.png" />
+                <div id="title">
+                    <h1><span>Igreja Presbiteriana</span> <span>de Casa Caiada</span></h1>
+                    <h2>Igreja Presbiteriana do Brasil</h2>
+                </div>
+            </header>
+            <div id="menu-horizontal">
+                <MenuHorizontal />
+            </div>
+            <div id="menu-collapsible">
+                <MenuCollapsible />
+            </div>
+        </div>
+    </Section>
 
-    <Section id="banners" class="fill gray">
+    <Section id="banners" class="fill gray borderless">
         <div id="images">
-            <img id="banner-1" src="assets/banners/banner-3.jpg">
-            <img id="banner-2" src="assets/banners/banner-2.jpg">
-            <img id="banner-3" src="assets/banners/banner-3.jpg">
+            <div class="image" style="background-image: url('assets/banners/banner-1.jpg')" />
+            <div class="image" style="background-image: url('assets/banners/banner-2.jpg')" />
+            <div class="image" style="background-image: url('assets/banners/banner-3.jpg')" />
         </div>
     </section>
 
     <Section id="intro" class="alternate spacing center">
-        <div id="message">
-            <span id="tagline">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-            <span id="subscript">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-        </div>
-        <div id="video">
-            <video controls>
-                <source src="assets/placeholder-intro.mp4" type="video/mp4" />
-            </video>
+        <div id="items">
+            <div id="message">
+                <span id="tagline">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                <span id="subscript">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+            </div>
+            <div id="video">
+                <video controls>
+                    <source src="assets/placeholder-intro.mp4" type="video/mp4" />
+                </video>
+            </div>
         </div>
     </Section>
 
@@ -33,7 +51,7 @@
                         <p>{{ section.content }}</p>
                         <div class="buttons">
                             <template v-for="action in section.actions">
-                                <Button class="spacing-right">{{ action.text }}</Button>
+                                <Button>{{ action.text }}</Button>
                             </template>
                         </div>
                     </div>
@@ -43,15 +61,16 @@
     </Section>
 
     <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
-        <ul>
-            <template v-for="(chunk, i) in sermons">
-                <li v-for="sermon in chunk">
-                    <a href="#">
-                        <Card :title="sermon.title" :imagesrc="sermon.image" />
-                    </a>
-                </li>
-            </template>
-        </ul>
+        <div id="cards">
+            <a v-for="sermon in sermons" id="card" href="#">
+                <div class="image-wrapper">
+                    <img :src="sermon.image" />
+                </div>
+                <template v-if="sermon.title">
+                    <span>{{ sermon.title }}</span>
+                </template>
+            </a>
+        </div>
         <Button class="see-more">Ver Todos</Button>
     </Section>
 
@@ -103,36 +122,34 @@
     <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
         <div id="contact-row">
             <div id="contact-info">
-                <ul>
-                    <li>
-                        <i class="fab icon-large fa-whatsapp"></i>
-                        <p>
-                            <span class="title">Whatsapp</span>
-                            <span class="subtitle">(81) 9319-6221</span>
-                        </p>
-                    </li>
-                    <li>
-                        <i class="fas icon-large fa-mobile-alt"></i>
-                        <p>
-                            <span class="title">Telefone</span>
-                            <span class="subtitle">(81) 3432-3629</span>
-                        </p>
-                    </li>
-                    <li>
-                        <i class="fas icon-medium fa-map-marked-alt"></i>
-                        <p>
-                            <span class="title">Localização</span>
-                            <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
-                        </p>
-                    </li>
-                    <li>
-                        <i class="fas icon-medium fa-envelope-open-text"></i>
-                        <p>
-                            <span class="title">Email</span>
-                            <span class="subtitle">central.ipcc@gmail.com</span>
-                        </p>
-                    </li>
-                </ul>
+                <a href="#">
+                    <i class="fab icon-large fa-whatsapp"></i>
+                    <p>
+                        <span class="title">Whatsapp</span>
+                        <span class="subtitle">(81) 9319-6221</span>
+                    </p>
+                </a>
+                <a href="#">
+                    <i class="fas icon-large fa-mobile-alt"></i>
+                    <p>
+                        <span class="title">Telefone</span>
+                        <span class="subtitle">(81) 3432-3629</span>
+                    </p>
+                </a>
+                <a href="#">
+                    <i class="fas icon-medium fa-map-marked-alt"></i>
+                    <p>
+                        <span class="title">Localização</span>
+                        <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
+                    </p>
+                </a>
+                <a href="#">
+                    <i class="fas icon-medium fa-envelope-open-text"></i>
+                    <p>
+                        <span class="title">Email</span>
+                        <span class="subtitle">central.ipcc@gmail.com</span>
+                    </p>
+                </a>
             </div>
             <div id="contact-form">
                 <input type="text" placeholder="Nome" />
@@ -176,17 +193,17 @@
 </template>
 
 <script>
+import MenuHorizontal from './MenuHorizontal.vue'
+import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
-import Card from './Card.vue'
 import Button from './Button.vue'
-
-import * as _ from 'lodash'
 
 export default {
     components: {
         Section,
-        Card,
         Button,
+        MenuHorizontal,
+        MenuCollapsible,
     },
     data: function () {
         return {
@@ -236,11 +253,6 @@ export default {
                 { title: 'Salmos', image: 'assets/sermons/series-8.jpg' },
             ]
         }
-    },
-    computed: {
-        sermons: function() {
-            return _.chunk(this.sermons, 4)
-        }
     }
 }
 </script>
@@ -249,19 +261,104 @@ export default {
 .see-more
     margin-top 30px !important
 
+Section#header
+    border-bottom 1px solid #ccc
+    border-top 5px solid #3069B3 !important
+    box-shadow 0 0 2px 0 #aaa
+    height 90px
+    position fixed
+    top 0
+    z-index 1000
+
+    #content
+        align-items center
+        display flex
+        flex-flow row nowrap
+        height 100%
+        justify-content space-between
+        padding 0 10px
+        width 100%
+
+        header
+            display grid
+            grid-template-columns  55px 1fr
+            grid-template-rows  55px
+
+            img
+                height 100%
+
+            #title
+                display flex
+                flex-flow column nowrap
+                height 100%
+                justify-content center
+                padding-left 20px
+
+                h1
+                    /* font-size calc(13px + (25 - 13) * ((100vw - 360px) / (1920 - 360))) */
+                    font-size @css{min(26px, max(16px, 2vw))}
+                    margin 0
+                    padding 0
+
+                    span
+                        white-space nowrap
+
+                h2
+                    color #3069B3
+                    font-size @css{min(14px, max(12px, 1.4vw))}
+                    font-weight 600
+                    margin 0
+                    padding 0
+                    white-space nowrap
+
+    #menu-collapsible
+        display none
+        width 100%
+
+@media (max-width: 767px)
+    Section#header
+        height auto
+        position initial
+
+        #menu-horizontal
+            display none
+
+        #menu-collapsible
+            display block
+
+        #content
+            flex-flow column nowrap
+
+            header
+                padding 10px 0
+
+                #title h1 span
+                    white-space normal
+
 Section#banners
     #images
         display grid
+        height 40vh
+        width 100%
 
-        img
+        .image
+            background-position center center
+            background-repeat no-repeat
+            background-size cover
             grid-column 1
             grid-row 1
+            height 100%
             width 100%
 
 Section#intro
-    #message, #video
-        flex-grow 1
-        max-width 40%
+    #items
+        align-items center
+        display grid
+        grid-gap 40px
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 400px)}, 1fr))
+        justify-items center
+        padding 0 40px
+        width 100%
 
     #message
         display flex
@@ -270,7 +367,7 @@ Section#intro
         text-align left
 
         #tagline
-            font-size 26px
+            font-size @css{min(26px, max(22px, 2vw))}
             font-weight 800
 
         #subscript
@@ -280,6 +377,7 @@ Section#intro
             margin-top 20px
 
     #video
+        max-width 500px
         text-align center
 
         video
@@ -324,12 +422,13 @@ Section#about-us ul
 
             .buttons
                 display inline-flex
+                flex-flow row wrap
                 gap 20px
 
     li.alternate
         flex-direction row-reverse
 
-        .card img
+        .card
             border-radius 0 3px 3px 0
             mask-image linear-gradient(to left, rgb(0, 0, 0) 75%, transparent)
 
@@ -340,23 +439,70 @@ Section#about-us ul
         border-bottom 1px solid #ccc
         padding-bottom 40px
 
-Section#sermon-series ul
-    display flex
-    flex-flow row wrap
-    justify-content space-between
-    list-style none
-    margin 0
-    padding 0
+    @media (max-width: 800px)
+        li, li.alternate
+            flex-flow column nowrap
 
-    li
-        margin 0
-        width 25%
+            .card
+                border-radius 0
+                height 200px
+                margin-bottom 30px
+                mask-image linear-gradient(to bottom, transparent, rgb(0, 0, 0) 1%, rgb(0, 0, 0) 75%, transparent)
+
+        li.border
+            border-bottom none
+            margin-bottom 30px
+            padding-bottom 0
+
+Section#sermon-series
+    #cards
+        display grid
+        grid-gap 50px
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 180px)}, 1fr))
+        justify-items center
+        padding 20px 50px
+        width 100%
+
+        #card
+            align-items center
+            display flex
+            flex-flow column nowrap
+            max-width 300px
+            width 100%
+
+        #card .image-wrapper
+            box-shadow 0 0 1px #000
+            overflow hidden
+            width 100%
+
+        #card img
+            display block
+            transition transform 0.2s
+            width 100%
+
+        #card span
+            font-weight 600
+            margin 10px 0
+            padding 10px 0
+            position relative
+
+        #card:hover img
+            transform scale(1.1)
+
+        #card:hover span::after
+            background #3069B3
+            bottom 2px
+            content ''
+            height 4px
+            left 0
+            position absolute
+            width 100%
 
 Section#groups
     #cards
         display grid
         grid-auto-flow row dense
-        grid-template-columns repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns repeat(auto-fit, minmax(@css{min(80%, 240px)}, 1fr));
         max-width 1920px
         width 100%
 
@@ -385,55 +531,51 @@ Section#groups
 Section#contact #contact-row
     align-items start
     display grid
-    grid-row-gap 40px
-    grid-template-columns repeat(auto-fit, minmax(400px, 1fr))
+    grid-row-gap 80px
+    grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 400px)}, 1fr))
     justify-items center
     padding 30px 50px
     width 100%
 
-    #contact-info, #contact-form
-        min-width 80%
+    #contact-form
+        min-width 70%
 
     #contact-info
-        ul
-            list-style none
-            margin 0
-            padding 0
+        display flex
+        flex-flow column nowrap
+        gap 40px
 
-            li
-                align-items start
+        a
+            align-items center
+            display grid
+            grid-column-gap 30px
+            grid-template-columns 60px auto
+            width 100%
+
+            i
+                text-align center
+
+            i.icon-medium
+                font-size 2.8rem
+
+            i.icon-large
+                font-size 3.5rem
+
+            p
                 display flex
-                flex-flow row nowrap
-                margin-bottom 25px
+                flex-flow column nowrap
+                margin 0
 
-                i, p
-                    padding 10px
+                span.title
+                    font-size 18px
 
-                i
-                    text-align center
-                    width 100px
+                span.subtitle
+                    color #444
+                    font-size 16px
+                    margin-top 5px
 
-                i.icon-medium
-                    font-size 2.8rem
-
-                i.icon-large
-                    font-size 3.5rem
-
-                p
-                    display flex
-                    flex-flow column nowrap
-                    margin 0
-
-                    span
-                        white-space nowrap
-
-                    span.title
-                        font-size 18px
-
-                    span.subtitle
-                        color #444
-                        font-size 16px
-                        margin-top 5px
+        a:hover, a:hover span.subtitle
+            color #3069B3
 
     #contact-form
         background white
@@ -472,12 +614,15 @@ Section#footer
     #footer-items
         display grid
         grid-gap 40px
-        grid-template-columns repeat(auto-fit, minmax(300px, 1fr))
+        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 300px)}, 1fr))
+
+        #footer-main-item, #footer-secondary-items
+            padding 0 20px
 
         #footer-secondary-items
             display grid
             grid-gap 40px
-            grid-template-columns repeat(auto-fit, minmax(200px, 1fr))
+            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 200px)}, 1fr))
 
             #item
                 font-weight 300
@@ -496,4 +641,5 @@ Section#copyright
     font-size 15px
     font-weight 300
     padding 20px 0
+    text-align center
 </style>

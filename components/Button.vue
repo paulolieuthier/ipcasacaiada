@@ -2,15 +2,6 @@
     <a class="button" href="#"><slot /></a>
 </template>
 
-<script>
-export default {
-    props: ['text'],
-    data() {
-        return {}
-    }
-}
-</script>
-
 <style scoped lang="stylus">
 .button
     background transparent
@@ -20,6 +11,7 @@ export default {
     font-weight 600
     padding 12px !important
     text-decoration none
+    white-space nowrap
 
 .button:hover
     color white
