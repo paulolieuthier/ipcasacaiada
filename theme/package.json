@@ -8,9 +8,16 @@
   "devDependencies": {
     "@parcel/transformer-vue": "^2.0.0-rc.0",
     "parcel": "^2.0.0-rc.0",
+    "parcel-plugin-watch-reload": "^1.0.3",
     "stylus": "^0.54.8"
   },
   "watchreload": {
     "files": "**/*.php"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.4.8",
+    "@vue/apollo-option": "^4.0.0-alpha.14",
+    "graphql": "^15.5.1",
+    "graphql-tag": "^2.12.5"
   }
 }
