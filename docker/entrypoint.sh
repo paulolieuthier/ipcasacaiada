@@ -13,6 +13,8 @@ if ! test -f wp-config.php; then
 
     wp plugin install --activate wp-graphql sermon-manager-for-wordpress
     wp theme activate ipcasacaiada
+
+    wp rewrite structure '/%postname%/'
 fi
 
 exec php -S 0.0.0.0:8000 -d display_erros=1 -d upload_max_filesize=10M -d post_max_size=10M

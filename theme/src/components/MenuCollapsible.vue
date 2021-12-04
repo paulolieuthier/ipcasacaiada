@@ -2,10 +2,10 @@
     <div id="content">
         <a href="#" :onclick="toggleMenu" class="strong">Menu <span id="arrow" :class="{ active: menuVisible }">&#11167;</span></a>
         <nav :class="{ hidden: !menuVisible }">
-            <a href="#sobre-nos">Sobre Nós</a>
-            <a href="#sermoes">Sermões</a>
-            <a href="#ministerios">Ministérios</a>
-            <a href="#contato">Contato</a>
+            <a href="/#sobre-nos">Sobre Nós</a>
+            <a href="/#sermoes">Sermões</a>
+            <a href="/#ministerios">Ministérios</a>
+            <a href="/#contato">Contato</a>
         </nav>
     </div>
 </template>

@@ -1,176 +1,130 @@
 <template>
     <template v-if="!loading">
-        <a class="anchor" id="inicio" ref="inicio" />
-        <Section id="header" flow="row" class="light-gray">
-            <div id="content">
-                <header>
-                    <img :src="data.logo" />
-                    <div id="title">
-                        <h1>{{ data.title }}</h1>
-                        <h2>{{ data.subtitle }}</h2>
+        <div>
+            <a class="anchor" id="inicio" ref="inicio" />
+            <Section id="banners" class="fill gray borderless">
+                <Carousel>
+                    <template v-for="banner in data.banners" :key="banner.image">
+                        <router-link :to="banner.uri">
+                            <div class="banner" :style="`background-image: url('${banner.image}')`" />
+                        </router-link>
+                    </template>
+                </Carousel>
+            </Section>
+
+            <Section id="intro" class="alternate spacing center">
+                <div id="items">
+                    <div id="message">
+                        <span id="tagline">{{ data.welcome.title }}</span>
+                        <span id="subscript">{{ data.welcome.subtitle }}</span>
                     </div>
-                </header>
-                <div id="menu-horizontal">
-                    <MenuHorizontal ref="menu" />
+                    <div id="video">
+                        <video controls :src="data.welcome.video">
+                            <source :src="data.welcome.video" type="video/mp4" />
+                        </video>
+                    </div>
                 </div>
-                <div id="menu-collapsible">
-                    <MenuCollapsible />
-                </div>
-            </div>
-        </Section>
+            </Section>
 
-        <Section id="banners" class="fill gray borderless">
-            <Carousel>
-                <a v-for="banner in data.banners" class="banner" :href="banner.uri" :style="`background-image: url('${banner.image}')`" />
-            </Carousel>
-        </Section>
-
-        <Section id="intro" class="alternate spacing center">
-            <div id="items">
-                <div id="message">
-                    <span id="tagline">{{ data.welcome.title }}</span>
-                    <span id="subscript">{{ data.welcome.subtitle }}</span>
-                </div>
-                <div id="video">
-                    <video controls :src="data.welcome.video">
-                        <source :src="data.welcome.video" type="video/mp4" />
-                    </video>
-                </div>
-            </div>
-        </Section>
-
-        <a class="anchor" id="sobre-nos" ref="sobre-nos" />
-        <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
-            <ul>
-                <template v-for="(section, index) in data.aboutUs">
-                    <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
-                        <div class="card" :style="`background-image: url('${section.image}')`" />
-                        <div class="content">
-                            <h1>{{ section.title }}</h1>
-                            <div v-html="section.content" />
-                            <div class="buttons">
-                                <template v-for="button in section.buttons">
-                                    <Button :link="button.uri">{{ button.text }}</Button>
-                                </template>
+            <a class="anchor" id="sobre-nos" ref="sobre-nos" />
+            <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
+                <ul>
+                    <template v-for="(section, index) in data.aboutUs" :key="section.title">
+                        <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
+                            <div class="card" :style="`background-image: url('${section.image}')`" />
+                            <div class="content">
+                                <h1>{{ section.title }}</h1>
+                                <div v-html="section.content" />
+                                <div class="buttons">
+                                    <template v-for="button in section.buttons" :key="button.uri">
+                                        <Button :link="button.uri">{{ button.text }}</Button>
+                                    </template>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </template>
-            </ul>
-        </Section>
+                        </li>
+                    </template>
+                </ul>
+            </Section>
 
-        <a class="anchor" id="sermoes" ref="sermoes" />
-        <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
-            <div id="cards">
-                <template v-for="series in data.sermons">
-                    <a id="card" :href="`/sermon-series/${series.slug}`">
-                        <div class="image-wrapper">
-                            <img :src="series.image" />
-                        </div>
-                        <span>{{ series.name }}</span>
-                    </a>
-                </template>
-            </div>
-            <Button class="see-more">Ver Todos</Button>
-        </Section>
-
-        <a class="anchor" id="ministerios" ref="ministerios" />
-        <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
-            <div id="cards">
-                <template v-for="group in data.groups">
-                    <a :href="`/ministerios/${group.slug}`" class="card">
-                        <img :src="group.image">
-                        <span>{{group.name}}</span>
-                    </a>
-                </template>
-            </div>
-        </Section>
-
-        <a class="anchor" id="contato" ref="contato" />
-        <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
-            <div id="contact-row">
-                <div id="contact-info">
-                    <a :href="whatsappLink" target="_blank">
-                        <i class="fab icon-large fa-whatsapp"></i>
-                        <p>
-                            <span class="title">Whatsapp</span>
-                            <span class="subtitle">{{ data.contact.whatsapp }}</span>
-                        </p>
-                    </a>
-                    <a :href="phoneLink" target="_blank">
-                        <i class="fas icon-large fa-mobile-alt"></i>
-                        <p>
-                            <span class="title">Telefone</span>
-                            <span class="subtitle">{{ data.contact.phone }}</span>
-                        </p>
-                    </a>
-                    <a :href="locationLink" target="_blank">
-                        <i class="fas icon-medium fa-map-marked-alt"></i>
-                        <p>
-                            <span class="title">Localização</span>
-                            <span class="subtitle">{{ data.contact.location }}</span>
-                        </p>
-                    </a>
-                    <a :href="emailLink" target="_blank">
-                        <i class="fas icon-medium fa-envelope-open-text"></i>
-                        <p>
-                            <span class="title">Email</span>
-                            <span class="subtitle">{{ data.contact.email }}</span>
-                        </p>
-                    </a>
+            <a class="anchor" id="sermoes" ref="sermoes" />
+            <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
+                <div id="cards">
+                    <template v-for="series in data.sermons.slice(0, SERMONS_LENGTH)" :key="series.slug">
+                        <a id="card" :href="`/sermoes/series/${series.slug}`">
+                            <div class="image-wrapper">
+                                <img :src="series.image" />
+                            </div>
+                            <span>{{ series.name }}</span>
+                        </a>
+                    </template>
                 </div>
-                <form id="contact-form" ref="contact">
-                    <input type="text" id="contact-name" placeholder="Nome" />
-                    <textarea type="text" id="contact-message" placeholder="Mensagem" rows="6"></textarea>
-                    <input type="submit" value="Enviar pelo Whatsapp" />
-                </form>
-            </div>
-        </Section>
+                <Button v-if="data.sermons.length > SERMONS_LENGTH" link="/sermoes/series" class="see-more">Ver Todos</Button>
+            </Section>
 
-        <Section id="footer" class="dark">
-            <div id="footer-items">
-                <div id="footer-main-item">
-                    <h3>{{ data.footer.first.title }}</h3>
-                    {{ data.footer.first.content }}
+            <a class="anchor" id="ministerios" ref="ministerios" />
+            <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
+                <div id="cards">
+                    <template v-for="group in data.groups" :key="group.uri">
+                        <div class="card">
+                            <router-link :to="`/ministerio${group.uri}`">
+                                <img :src="group.image" />
+                                <span>{{group.name}}</span>
+                            </router-link>
+                        </div>
+                    </template>
                 </div>
-                <div id="footer-secondary-items">
-                    <div id="item">
-                        <h3>{{ data.footer.second.title }}</h3>
-                        {{ data.footer.second.content }}
-                    </div>
-                    <div id="item">
-                        <h3>Redes Sociais</h3>
-                        <a v-if="data.footer.social.youtube" :href="data.footer.social.youtube">
-                            <i class="fab fa-youtube" />
+            </Section>
+
+            <a class="anchor" id="contato" ref="contato" />
+            <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
+                <div id="contact-row">
+                    <div id="contact-info">
+                        <a :href="whatsappLink" target="_blank">
+                            <i class="fab icon-large fa-whatsapp"></i>
+                            <p>
+                                <span class="title">Whatsapp</span>
+                                <span class="subtitle">{{ data.contact.whatsapp }}</span>
+                            </p>
                         </a>
-                        <a v-if="data.footer.social.instagram" :href="data.footer.social.instagram">
-                            <i class="fab fa-instagram" />
+                        <a :href="phoneLink" target="_blank">
+                            <i class="fas icon-large fa-mobile-alt"></i>
+                            <p>
+                                <span class="title">Telefone</span>
+                                <span class="subtitle">{{ data.contact.phone }}</span>
+                            </p>
                         </a>
-                        <a v-if="data.footer.social.facebook" :href="data.footer.social.facebook">
-                            <i class="fab fa-facebook" />
+                        <a :href="locationLink" target="_blank">
+                            <i class="fas icon-medium fa-map-marked-alt"></i>
+                            <p>
+                                <span class="title">Localização</span>
+                                <span class="subtitle">{{ data.contact.location }}</span>
+                            </p>
                         </a>
-                        <a v-if="data.footer.social.spotify" :href="data.footer.social.spotify">
-                            <i class="fab fa-spotify" />
+                        <a :href="emailLink" target="_blank">
+                            <i class="fas icon-medium fa-envelope-open-text"></i>
+                            <p>
+                                <span class="title">Email</span>
+                                <span class="subtitle">{{ data.contact.email }}</span>
+                            </p>
                         </a>
                     </div>
+                    <form id="contact-form" ref="contact">
+                        <input type="text" id="contact-name" placeholder="Nome" />
+                        <textarea type="text" id="contact-message" placeholder="Mensagem" rows="6"></textarea>
+                        <input type="submit" value="Enviar pelo Whatsapp" />
+                    </form>
                 </div>
-            </div>
-        </Section>
-
-        <Section id="copyright" class="darker center">
-            {{ data.title }}
-        </Section>
+            </Section>
+        </div>
     </template>
 </template>
 
 <script>
-import MenuHorizontal from './MenuHorizontal.vue'
-import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
 import Carousel from './Carousel.vue'
 import Button from './Button.vue'
 
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import Querier from '../querier.js'
 
 export default {
@@ -178,9 +132,8 @@ export default {
         Section,
         Carousel,
         Button,
-        MenuHorizontal,
-        MenuCollapsible,
     },
+    emits: ['pageLoaded', 'scrolledToSection'],
     setup() {
         const { loading, data } = Querier.home()
 
@@ -192,26 +145,20 @@ export default {
             ministerios: ref(null),
             contato: ref(null),
 
-            menu: ref(null),
+            SERMONS_LENGTH: 10,
+
             contact: ref(null),
 
             loading,
             data
         }
     },
-    watch: {
-        loading(isLoading) {
-            if (!isLoading) {
-                this.$nextTick(() => {
-                    // trigger scroll to correct section
-                    // can't make it work without a timer
-                    setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400)
-
-                    this.contact.addEventListener('submit', this.onContact)
-                    window.addEventListener('scroll', this.updateMenu)
-                })
-            }
-        }
+    mounted() {
+        watchEffect(() => this.loading || this.onDataMounted(), { flush: 'post' })
+    },
+    unmounted() {
+        window.removeEventListener('scroll', this.onScroll)
+        this.$emit('scrolledToSection', null)
     },
     computed: {
         anchors() {
@@ -251,6 +198,16 @@ export default {
         }
     },
     methods: {
+        onDataMounted() {
+            // touching current route is necessary to same-page, anchor-based links to work
+            // https://github.com/vuejs/vue-router/pull/3592 ?
+            this.$router.currentRoute.value
+
+            this.$emit('pageLoaded')
+            this.contact.addEventListener('submit', this.onContact)
+            window.addEventListener('scroll', this.onScroll)
+            this.onScroll()
+        },
         buildWhatsappLink(message) {
             if (this.whatsappNumber) {
                 let link = 'https://api.whatsapp.com/send?lang=pt_br&phone=+55' + this.whatsappNumber
@@ -260,7 +217,7 @@ export default {
                 return link
             }
         },
-        updateMenu(event) {
+        onScroll() {
             let item = null;
             for (let anchor in this.anchors) {
                 const rect = this.anchors[anchor].getBoundingClientRect()
@@ -268,7 +225,12 @@ export default {
                     item = anchor
                 }
             }
-            this.$refs.menu.activate(item)
+
+            if (item !== this.activeSection) {
+                this.$emit('scrolledToSection', item)
+            }
+
+            this.activeSection = item
         },
         onContact(event) {
             event.preventDefault()
@@ -289,78 +251,8 @@ a.anchor
     position relative
     top -50px
 
-Section#header
-    border-bottom 1px solid #ccc
-    border-top 5px solid #3069B3 !important
-    box-shadow 0 0 2px 0 #aaa
-    height 90px
-    position sticky
-    top 0
-    z-index 1000
-
-    #content
-        align-items center
-        display flex
-        flex-flow row nowrap
-        height 100%
-        justify-content space-between
-        padding 0 10px
-        width 100%
-
-        header
-            display grid
-            grid-template-columns  55px 1fr
-            grid-template-rows  55px
-
-            img
-                height 100%
-
-            #title
-                display flex
-                flex-flow column nowrap
-                height 100%
-                justify-content center
-                padding-left 20px
-
-                h1
-                    font-size @css{min(26px, max(16px, 2vw))}
-                    margin 0
-                    padding 0
-
-                    span
-                        white-space nowrap
-
-                h2
-                    color #3069B3
-                    font-size @css{min(14px, max(12px, 1.4vw))}
-                    font-weight 600
-                    margin 0
-                    padding 0
-                    white-space nowrap
-
-    #menu-collapsible
-        display none
-        width 100%
-
-@media (max-width: 767px)
-    Section#header
-        height auto
-        position initial
-
-        #menu-horizontal
-            display none
-
-        #menu-collapsible
-            display block
-
-        #content
-            flex-flow column nowrap
-
-            header
-                padding 10px 0
-
-                #title h1 span
-                    white-space normal
+a.anchor#inicio
+    top -200px
 
 Section#banners
     height 300px
@@ -368,6 +260,7 @@ Section#banners
     .banner
         background-position center center
         background-size cover
+        height 100%
 
 Section#intro
     #items
@@ -625,48 +518,4 @@ Section#contact #contact-row
             color white
             cursor pointer
             background #3069B3
-
-Section#footer
-    color #eee
-    font-size 14px
-    padding 40px 15px 40px
-
-    #footer-items
-        display grid
-        grid-gap 40px
-        grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 300px)}, 1fr))
-
-        #footer-main-item, #footer-secondary-items
-            padding 0 20px
-            white-space pre-line
-
-        #footer-secondary-items
-            display grid
-            grid-gap 40px
-            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 200px)}, 1fr))
-
-            #item
-                font-weight 300
-                white-space pre-line
-
-        h3
-            font-size 16px
-            margin 0 0 10px
-
-        a
-            color white
-
-        i
-            font-size 22px
-            padding 5px 20px 0 0
-
-        i:hover
-            transform scale(1.1)
-
-Section#copyright
-    color #eee
-    font-size 15px
-    font-weight 300
-    padding 20px 0
-    text-align center
 </style>

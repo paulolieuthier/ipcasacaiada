@@ -13,7 +13,7 @@ use Carbon_Fields\Field;
 
 add_action('carbon_fields_register_fields', function() {
     WpGraphQLCrbContainer::register(
-        Container::make('theme_options', __('IPCC - Página Inicial', 'app'))
+        Container::make('theme_options', __('IPCC', 'app'))
             ->set_icon('dashicons-admin-home')
             ->set_page_menu_position(4)
             ->add_fields([
@@ -36,6 +36,10 @@ add_action('carbon_fields_register_fields', function() {
                             ->set_min(1)
                             ->set_max(1),
                     ]),
+
+                Field::make('separator', 'crb_separator_banner_standalone_page', 'Banner (página avulsa)'),
+                Field::make('image', 'banner-standalone-page', 'Imagem')
+                    ->set_value_type('url'),
 
                 Field::make('separator', 'crb_separator_welcome', 'Saudação'),
                 Field::make('text', 'welcome-title', 'Título')
@@ -170,15 +174,36 @@ add_filter('register_taxonomy_args', function($args, $taxonomy) {
     return $args;
 }, 10, 2);
 
-# manually include sermon series' image field
 add_action('graphql_register_types', function() {
     register_graphql_field('SermonSerie', 'image', [
         'type' => 'String',
         'description' => 'Sermon series image',
-        'resolve' => function($source, $args, $context, $info) {
+        'resolve' => function($source) {
             return get_sermon_series_image_url($source->term_id, 'large');
         }
     ]);
-});
 
-?>
+    register_graphql_field('Sermon', 'passage', [
+        'type' => 'String',
+        'description' => 'Sermon bible passage',
+        'resolve' => function($source) {
+            return get_post_meta($source->ID, 'bible_passage', true);
+        }
+    ]);
+
+    register_graphql_field('Sermon', 'preached', [
+        'type' => 'String',
+        'description' => 'Sermon date',
+        'resolve' => function($source) {
+            return gmdate('c', get_post_meta($source->ID, 'sermon_date', true));
+        }
+    ]);
+
+    register_graphql_field('Sermon', 'embed_code', [
+        'type' => 'String',
+        'description' => 'Sermon embed code',
+        'resolve' => function($source) {
+            return get_post_meta($source->ID, 'sermon_video', true);
+        }
+    ]);
+});
