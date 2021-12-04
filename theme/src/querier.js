@@ -6,58 +6,58 @@ export default {
     const { result, loading } = useQuery(gql`
       query {
         site: generalSettings {
-            title
-            description
+          title
+          description
         }
         theme: crbThemeOptions {
-            logo
-            welcomeTitle
-            welcomeSubtitle
-            welcomeVideo
-            banners {
-                image
-                page {
-                    uri
-                }
+          logo
+          welcomeTitle
+          welcomeSubtitle
+          welcomeVideo
+          banners {
+            image
+            page {
+              uri
             }
-            aboutUs {
-                title
-                content
-                image
-                actions {
-                    text
-                    page {
-                        uri
-                    }
-                }
+          }
+          aboutUs {
+            title
+            content
+            image
+            actions {
+              text
+              page {
+                uri
+              }
             }
-            groups {
-                name
-                image
-                page {
-                    slug
-                }
+          }
+          groups {
+            name
+            image
+            page {
+              uri
             }
-            contactWhatsapp,
-            contactPhone,
-            contactLocation,
-            contactEmail,
-            footerFirstTitle,
-            footerFirst,
-            footerSecondTitle,
-            footerSecond,
-            socialYoutube,
-            socialInstagram,
-            socialFacebook,
-            socialSpotify,
+          }
+          contactWhatsapp,
+          contactPhone,
+          contactLocation,
+          contactEmail,
+          footerFirstTitle,
+          footerFirst,
+          footerSecondTitle,
+          footerSecond,
+          socialYoutube,
+          socialInstagram,
+          socialFacebook,
+          socialSpotify,
         }
         sermons: sermonSeries {
-            nodes {
-                name
-                slug
-                count
-                image
-            }
+          nodes {
+            name
+            slug
+            count
+            image
+          }
         }
       }`)
 
@@ -94,7 +94,7 @@ export default {
         groups: data.theme.groups.map(group => ({
           name: group.name,
           image: group.image,
-          slug: group.page[0]?.slug
+          uri: group.page[0]?.uri
         })),
         contact: {
           whatsapp: data.theme.contactWhatsapp,
@@ -118,6 +118,108 @@ export default {
             spotify: data.theme.socialSpotify,
           }
         }
+      }))
+    }
+  },
+
+  page: (uri) => {
+    const { result, loading } = useQuery(gql`
+      query {
+        theme: crbThemeOptions {
+          bannerStandalonePage
+        }
+        page: pageBy(uri: "${uri}") {
+          title
+          content
+        }
+      }`)
+
+    return {
+      loading,
+      data: useResult(result, null, data => ({
+        banner: data.theme.bannerStandalonePage,
+        title: data.page.title,
+        content: data.page.content,
+      }))
+    }
+  },
+
+  sermonSeries: () => {
+    const { result, loading } = useQuery(gql`
+      query {
+        theme: crbThemeOptions {
+          bannerStandalonePage
+        }
+        sermons: sermonSeries {
+          nodes {
+            name
+            slug
+            count
+            image
+          }
+        }
+      }`)
+
+    return {
+      loading,
+      data: useResult(result, null, data => ({
+        banner: data.theme.bannerStandalonePage,
+        sermons: data.sermons.nodes.map(series => ({
+          name: series.name,
+          image: series.image,
+          slug: series.slug,
+          count: series.count ?? 0,
+        })),
+      }))
+    }
+  },
+
+  sermonSerie: (serie) => {
+    const { result, loading } = useQuery(gql`
+      query {
+        theme: crbThemeOptions {
+          bannerStandalonePage
+        }
+        series: sermonSeries(where: {slug: "${serie}"}) {
+          nodes {
+            name
+            description
+            image
+            sermons {
+              nodes {
+                slug
+                title
+                passage
+                embedCode
+                preached
+                preachers {
+                  nodes {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`)
+
+    return {
+      loading,
+      data: useResult(result, null, data => ({
+        banner: data.theme.bannerStandalonePage,
+        title: data.series.nodes[0]?.name,
+        description: data.series.nodes[0]?.description,
+        image: data.series.nodes[0]?.image,
+        sermons: data.series.nodes[0]?.sermons.nodes
+          .map(sermon => ({
+            slug: sermon.slug,
+            title: sermon.title,
+            passage: sermon.passage,
+            embedCode: sermon.embedCode,
+            date: new Date(sermon.preached),
+            preacher: sermon.preachers.nodes[0]?.name,
+          }))
+          .sort((s1, s2) => s1.date.getTime() - s2.date.getTime())
       }))
     }
   }

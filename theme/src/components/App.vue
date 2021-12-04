@@ -3,9 +3,13 @@
         <Section id="header" flow="row" class="light-gray">
             <div id="content">
                 <header>
-                    <img :src="data.logo" />
+                    <router-link to="/">
+                        <img :src="data.logo" />
+                    </router-link>
                     <div id="title">
-                        <h1>{{ data.title }}</h1>
+                        <router-link to="/">
+                            <h1>{{ data.title }}</h1>
+                        </router-link>
                         <h2>{{ data.subtitle }}</h2>
                     </div>
                 </header>
@@ -18,7 +22,7 @@
             </div>
         </Section>
 
-        <router-view @scrolledToSection="onScrolledToSection" />
+        <router-view v-on:pageLoaded="onPageLoaded" v-on:scrolledToSection="onScrolledToSection" />
 
         <Section id="footer" class="dark">
             <div id="footer-items">
@@ -51,7 +55,7 @@
         </Section>
 
         <Section id="copyright" class="darker center">
-            {{ data.title }}
+            <span>{{ data.title }}</span>
         </Section>
     </template>
 </template>
@@ -62,6 +66,7 @@ import MenuHorizontal from './MenuHorizontal.vue'
 import MenuCollapsible from './MenuCollapsible.vue'
 
 import { ref } from 'vue'
+import Bus from '../bus.js'
 import Querier from '../querier.js'
 
 export default {
@@ -73,12 +78,19 @@ export default {
     setup() {
         const { loading, data } = Querier.home()
         return {
+            bus: new Bus(),
             menu: ref(null),
             loading,
             data,
         }
     },
     methods: {
+        once(event, f) {
+            this.bus.once(event, f)
+        },
+        onPageLoaded() {
+            this.bus.emit('pageLoaded')
+        },
         onScrolledToSection(section) {
             this.menu.activate(section)
         }
@@ -95,6 +107,7 @@ html, body
 body
     color black
     font-family 'Montserrat', 'sans-serif'
+    font-size 14px
 
 *, *:before, *:after
     box-sizing border-box
@@ -220,5 +233,8 @@ Section#copyright
     font-size 15px
     font-weight 300
     padding 20px 0
-    text-align center
+
+    span
+        text-align center
+        width 100%
 </style>

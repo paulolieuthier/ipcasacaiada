@@ -1,6 +1,6 @@
 <template>
     <section class="wrapper">
-        <section id="content" :class="flow">
+        <section id="main" :class="flow">
             <h2 v-if="title">{{title}}</h2>
             <slot />
         </section>
@@ -23,7 +23,7 @@ export default {
 .wrapper.fill
     justify-content center
 
-    #content
+    #main
         max-width 1920px
         width 100%
 
@@ -56,7 +56,7 @@ export default {
 .wrapper.center #content
     justify-content space-around
 
-#content
+#main
     align-items center
     display flex
     height 100%
@@ -64,17 +64,17 @@ export default {
     max-width 1300px
     width 100%
 
-#content.row
+#main.row
     flex-flow row nowrap
 
-#content.column
+#main.column
     flex-flow column nowrap
 
-#content > h2
+#main > h2
     text-align center
     margin 0 0 40px
 
-#content > h2::after
+#main > h2::after
     background #3069b3
     content ''
     display block

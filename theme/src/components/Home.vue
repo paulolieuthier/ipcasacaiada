@@ -1,115 +1,121 @@
 <template>
     <template v-if="!loading">
-        <a class="anchor" id="inicio" ref="inicio" />
-        <Section id="banners" class="fill gray borderless">
-            <Carousel>
-                <template v-for="banner in data.banners" :key="banner.image">
-                    <a class="banner" :href="banner.uri" :style="`background-image: url('${banner.image}')`" />
-                </template>
-            </Carousel>
-        </Section>
+        <div>
+            <a class="anchor" id="inicio" ref="inicio" />
+            <Section id="banners" class="fill gray borderless">
+                <Carousel>
+                    <template v-for="banner in data.banners" :key="banner.image">
+                        <router-link :to="banner.uri">
+                            <div class="banner" :style="`background-image: url('${banner.image}')`" />
+                        </router-link>
+                    </template>
+                </Carousel>
+            </Section>
 
-        <Section id="intro" class="alternate spacing center">
-            <div id="items">
-                <div id="message">
-                    <span id="tagline">{{ data.welcome.title }}</span>
-                    <span id="subscript">{{ data.welcome.subtitle }}</span>
+            <Section id="intro" class="alternate spacing center">
+                <div id="items">
+                    <div id="message">
+                        <span id="tagline">{{ data.welcome.title }}</span>
+                        <span id="subscript">{{ data.welcome.subtitle }}</span>
+                    </div>
+                    <div id="video">
+                        <video controls :src="data.welcome.video">
+                            <source :src="data.welcome.video" type="video/mp4" />
+                        </video>
+                    </div>
                 </div>
-                <div id="video">
-                    <video controls :src="data.welcome.video">
-                        <source :src="data.welcome.video" type="video/mp4" />
-                    </video>
-                </div>
-            </div>
-        </Section>
+            </Section>
 
-        <a class="anchor" id="sobre-nos" ref="sobre-nos" />
-        <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
-            <ul>
-                <template v-for="(section, index) in data.aboutUs" :key="section.title">
-                    <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
-                        <div class="card" :style="`background-image: url('${section.image}')`" />
-                        <div class="content">
-                            <h1>{{ section.title }}</h1>
-                            <div v-html="section.content" />
-                            <div class="buttons">
-                                <template v-for="button in section.buttons" :key="button.uri">
-                                    <Button :link="button.uri">{{ button.text }}</Button>
-                                </template>
+            <a class="anchor" id="sobre-nos" ref="sobre-nos" />
+            <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
+                <ul>
+                    <template v-for="(section, index) in data.aboutUs" :key="section.title">
+                        <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
+                            <div class="card" :style="`background-image: url('${section.image}')`" />
+                            <div class="content">
+                                <h1>{{ section.title }}</h1>
+                                <div v-html="section.content" />
+                                <div class="buttons">
+                                    <template v-for="button in section.buttons" :key="button.uri">
+                                        <Button :link="button.uri">{{ button.text }}</Button>
+                                    </template>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </template>
-            </ul>
-        </Section>
+                        </li>
+                    </template>
+                </ul>
+            </Section>
 
-        <a class="anchor" id="sermoes" ref="sermoes" />
-        <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
-            <div id="cards">
-                <template v-for="series in data.sermons" :key="series.slug">
-                    <a id="card" :href="`/sermon-series/${series.slug}`">
-                        <div class="image-wrapper">
-                            <img :src="series.image" />
-                        </div>
-                        <span>{{ series.name }}</span>
-                    </a>
-                </template>
-            </div>
-            <Button class="see-more">Ver Todos</Button>
-        </Section>
-
-        <a class="anchor" id="ministerios" ref="ministerios" />
-        <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
-            <div id="cards">
-                <template v-for="group in data.groups" :key="group.slug">
-                    <a :href="`/ministerios/${group.slug}`" class="card">
-                        <img :src="group.image" />
-                        <span>{{group.name}}</span>
-                    </a>
-                </template>
-            </div>
-        </Section>
-
-        <a class="anchor" id="contato" ref="contato" />
-        <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
-            <div id="contact-row">
-                <div id="contact-info">
-                    <a :href="whatsappLink" target="_blank">
-                        <i class="fab icon-large fa-whatsapp"></i>
-                        <p>
-                            <span class="title">Whatsapp</span>
-                            <span class="subtitle">{{ data.contact.whatsapp }}</span>
-                        </p>
-                    </a>
-                    <a :href="phoneLink" target="_blank">
-                        <i class="fas icon-large fa-mobile-alt"></i>
-                        <p>
-                            <span class="title">Telefone</span>
-                            <span class="subtitle">{{ data.contact.phone }}</span>
-                        </p>
-                    </a>
-                    <a :href="locationLink" target="_blank">
-                        <i class="fas icon-medium fa-map-marked-alt"></i>
-                        <p>
-                            <span class="title">Localização</span>
-                            <span class="subtitle">{{ data.contact.location }}</span>
-                        </p>
-                    </a>
-                    <a :href="emailLink" target="_blank">
-                        <i class="fas icon-medium fa-envelope-open-text"></i>
-                        <p>
-                            <span class="title">Email</span>
-                            <span class="subtitle">{{ data.contact.email }}</span>
-                        </p>
-                    </a>
+            <a class="anchor" id="sermoes" ref="sermoes" />
+            <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
+                <div id="cards">
+                    <template v-for="series in data.sermons.slice(0, SERMONS_LENGTH)" :key="series.slug">
+                        <a id="card" :href="`/sermoes/series/${series.slug}`">
+                            <div class="image-wrapper">
+                                <img :src="series.image" />
+                            </div>
+                            <span>{{ series.name }}</span>
+                        </a>
+                    </template>
                 </div>
-                <form id="contact-form" ref="contact">
-                    <input type="text" id="contact-name" placeholder="Nome" />
-                    <textarea type="text" id="contact-message" placeholder="Mensagem" rows="6"></textarea>
-                    <input type="submit" value="Enviar pelo Whatsapp" />
-                </form>
-            </div>
-        </Section>
+                <Button v-if="data.sermons.length > SERMONS_LENGTH" link="/sermoes/series" class="see-more">Ver Todos</Button>
+            </Section>
+
+            <a class="anchor" id="ministerios" ref="ministerios" />
+            <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
+                <div id="cards">
+                    <template v-for="group in data.groups" :key="group.uri">
+                        <div class="card">
+                            <router-link :to="`/ministerio${group.uri}`">
+                                <img :src="group.image" />
+                                <span>{{group.name}}</span>
+                            </router-link>
+                        </div>
+                    </template>
+                </div>
+            </Section>
+
+            <a class="anchor" id="contato" ref="contato" />
+            <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
+                <div id="contact-row">
+                    <div id="contact-info">
+                        <a :href="whatsappLink" target="_blank">
+                            <i class="fab icon-large fa-whatsapp"></i>
+                            <p>
+                                <span class="title">Whatsapp</span>
+                                <span class="subtitle">{{ data.contact.whatsapp }}</span>
+                            </p>
+                        </a>
+                        <a :href="phoneLink" target="_blank">
+                            <i class="fas icon-large fa-mobile-alt"></i>
+                            <p>
+                                <span class="title">Telefone</span>
+                                <span class="subtitle">{{ data.contact.phone }}</span>
+                            </p>
+                        </a>
+                        <a :href="locationLink" target="_blank">
+                            <i class="fas icon-medium fa-map-marked-alt"></i>
+                            <p>
+                                <span class="title">Localização</span>
+                                <span class="subtitle">{{ data.contact.location }}</span>
+                            </p>
+                        </a>
+                        <a :href="emailLink" target="_blank">
+                            <i class="fas icon-medium fa-envelope-open-text"></i>
+                            <p>
+                                <span class="title">Email</span>
+                                <span class="subtitle">{{ data.contact.email }}</span>
+                            </p>
+                        </a>
+                    </div>
+                    <form id="contact-form" ref="contact">
+                        <input type="text" id="contact-name" placeholder="Nome" />
+                        <textarea type="text" id="contact-message" placeholder="Mensagem" rows="6"></textarea>
+                        <input type="submit" value="Enviar pelo Whatsapp" />
+                    </form>
+                </div>
+            </Section>
+        </div>
     </template>
 </template>
 
@@ -118,7 +124,7 @@ import Section from './Section.vue'
 import Carousel from './Carousel.vue'
 import Button from './Button.vue'
 
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import Querier from '../querier.js'
 
 export default {
@@ -127,7 +133,7 @@ export default {
         Carousel,
         Button,
     },
-    emits: ['scrolledToSection'],
+    emits: ['pageLoaded', 'scrolledToSection'],
     setup() {
         const { loading, data } = Querier.home()
 
@@ -139,6 +145,8 @@ export default {
             ministerios: ref(null),
             contato: ref(null),
 
+            SERMONS_LENGTH: 10,
+
             contact: ref(null),
 
             loading,
@@ -146,14 +154,11 @@ export default {
         }
     },
     mounted() {
-                this.$nextTick(() => {
-                    // trigger scroll to correct section
-                    // can't make it work without a timer
-                    setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400)
-
-                    this.contact.addEventListener('submit', this.onContact)
-                    window.addEventListener('scroll', this.onScroll)
-                })
+        watchEffect(() => this.loading || this.onDataMounted(), { flush: 'post' })
+    },
+    unmounted() {
+        window.removeEventListener('scroll', this.onScroll)
+        this.$emit('scrolledToSection', null)
     },
     computed: {
         anchors() {
@@ -193,6 +198,16 @@ export default {
         }
     },
     methods: {
+        onDataMounted() {
+            // touching current route is necessary to same-page, anchor-based links to work
+            // https://github.com/vuejs/vue-router/pull/3592 ?
+            this.$router.currentRoute.value
+
+            this.$emit('pageLoaded')
+            this.contact.addEventListener('submit', this.onContact)
+            window.addEventListener('scroll', this.onScroll)
+            this.onScroll()
+        },
         buildWhatsappLink(message) {
             if (this.whatsappNumber) {
                 let link = 'https://api.whatsapp.com/send?lang=pt_br&phone=+55' + this.whatsappNumber
@@ -210,7 +225,12 @@ export default {
                     item = anchor
                 }
             }
-            this.$emit('scrolledToSection', item)
+
+            if (item !== this.activeSection) {
+                this.$emit('scrolledToSection', item)
+            }
+
+            this.activeSection = item
         },
         onContact(event) {
             event.preventDefault()
@@ -240,6 +260,7 @@ Section#banners
     .banner
         background-position center center
         background-size cover
+        height 100%
 
 Section#intro
     #items

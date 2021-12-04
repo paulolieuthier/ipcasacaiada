@@ -1,5 +1,7 @@
 <template>
-    <a class="button" :href="link ?? '#'"><slot /></a>
+    <span class="button">
+        <router-link :to="link ?? '#'"><slot /></router-link>
+    </span>
 </template>
 
 <script>
@@ -9,7 +11,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.button
+.button a
     background transparent
     border-radius 0 !important
     border 2px solid #3069B3!important
@@ -19,7 +21,7 @@ export default {
     text-decoration none
     white-space nowrap
 
-.button:hover
+.button:hover a
     color white
     cursor pointer
     background #3069B3

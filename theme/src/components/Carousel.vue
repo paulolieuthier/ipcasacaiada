@@ -30,6 +30,13 @@ export default {
             this.$refs.slides.addEventListener('mouseleave', this.restartTimer, options)
         }
     },
+    beforeUnmount() {
+        this.stopTimer()
+        if (this.$refs.slides.children) {
+            this.$refs.slides.removeEventListener('mouseenter', this.stopTimer)
+            this.$refs.slides.removeEventListener('mouseleave', this.restartTimer)
+        }
+    },
     methods: {
         setupPagination() {
             const slides = this.$refs.slides.children.length

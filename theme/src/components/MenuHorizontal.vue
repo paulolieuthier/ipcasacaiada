@@ -1,10 +1,20 @@
 <template>
     <nav>
-        <a ref="inicio" class="selected" href="/#inicio">Início</a>
-        <a ref="sobre-nos" href="/#sobre-nos">Sobre Nós</a>
-        <a ref="sermoes" href="/#sermoes">Sermões</a>
-        <a ref="ministerios" href="/#ministerios">Ministérios</a>
-        <a ref="contato" href="/#contato">Contato</a>
+        <span ref="inicio">
+            <router-link to="/#inicio">Início</router-link>
+        </span>
+        <span ref="sobre-nos">
+            <router-link to="/#sobre-nos">Sobre Nós</router-link>
+        </span>
+        <span ref="sermoes">
+            <router-link to="/#sermoes">Sermões</router-link>
+        </span>
+        <span ref="ministerios">
+            <router-link to="/#ministerios">Ministérios</router-link>
+        </span>
+        <span ref="contato">
+            <router-link to="/#contato">Contato</router-link>
+        </span>
     </nav>
 </template>
 
@@ -12,11 +22,17 @@
 export default {
     methods: {
         activate(item) {
+            // if null, clear active mark
+            if (!item) {
+                this.$el.querySelector('.selected')?.classList.remove('selected')
+                return
+            }
+
             const next = this.$refs[item]
             if (next) {
                 const selected = this.$el.querySelector('.selected')
                 if (selected !== next) {
-                    selected.classList.remove('selected')
+                    selected?.classList.remove('selected')
                     next.classList.add('selected')
                 }
             }
@@ -41,12 +57,12 @@ nav
         text-decoration none
         text-transform uppercase
 
-nav a.selected,
-nav:hover a:hover
+nav span.selected a,
+nav:hover span:hover a
     color #3069B3
 
-nav a.selected:after,
-nav:hover a:hover:after
+nav span.selected a:after,
+nav:hover span:hover a:after
     background #3069B3
     bottom 0px
     content ''
@@ -56,9 +72,9 @@ nav:hover a:hover:after
     position absolute
     right 8px
 
-nav:hover a
+nav:hover span a
     color #444
 
-nav:hover a:after
+nav:hover span a:after
     display none
 </style>
