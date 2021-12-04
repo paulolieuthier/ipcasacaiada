@@ -12,6 +12,7 @@ if ! test -f wp-config.php; then
     wp option update blogdescription "Igreja Presbiteriana do Brasil"
 fi
 
+wp plugin uninstall akismet hello
 wp plugin install --activate wp-graphql
 wp theme activate ipcasacaiada
-exec php -S 0.0.0.0:8000
+exec php -S 0.0.0.0:8000 -d upload_max_filesize=10M -d post_max_size=10M

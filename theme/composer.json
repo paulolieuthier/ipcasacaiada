@@ -1,0 +1,14 @@
+{
+    "name": "paulolieuthier/ipcasacaiada",
+    "type": "project",
+    "require": {
+        "htmlburger/carbon-fields": "^3.3",
+        "matepaiva/wp-graphql-crb": "^0.0.6"
+    },
+    "authors": [
+        {
+            "name": "Paulo Lieuthier",
+            "email": "paulolieuthier@gmail.com"
+        }
+    ]
+}

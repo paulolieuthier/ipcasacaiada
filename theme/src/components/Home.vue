@@ -2,10 +2,10 @@
     <Section id="header" flow="row" class="light-gray">
         <div id="content">
             <header>
-                <img :src="asset('logo.png')" />
+                <img :src="theme.logo" />
                 <div id="title">
-                    <h1>{{ query.title }}</h1>
-                    <h2>{{ query.description }}</h2>
+                    <h1>{{ site.title }}</h1>
+                    <h2>{{ site.description }}</h2>
                 </div>
             </header>
             <div id="menu-horizontal">
@@ -19,21 +19,21 @@
 
     <Section id="banners" class="fill gray borderless">
         <div id="images">
-            <div class="image" :style="`background-image: url('${asset('banners/banner-1.jpg')}')`" />
-            <div class="image" :style="`background-image: url('${asset('banners/banner-2.jpg')}')`" />
-            <div class="image" :style="`background-image: url('${asset('banners/banner-3.jpg')}')`" />
+            <template v-for="banner in theme.banners">
+                <a :href="banner.page[0]?.uri" class="image" :style="`background-image: url('${banner.image}')`" />
+            </template>
         </div>
     </Section>
 
     <Section id="intro" class="alternate spacing center">
         <div id="items">
             <div id="message">
-                <span id="tagline">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-                <span id="subscript">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                <span id="tagline">{{ theme.welcomeTitle }}</span>
+                <span id="subscript">{{ theme.welcomeSubtitle }}</span>
             </div>
             <div id="video">
-                <video controls>
-                    <source :src="asset('placeholder-intro.mp4')" type="video/mp4" />
+                <video controls :src="theme.welcomeVideo">
+                    <source :src="theme.welcomeVideo" type="video/mp4" />
                 </video>
             </div>
         </div>
@@ -41,17 +41,17 @@
 
     <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
         <ul>
-            <template v-for="(section, index) in about">
-                <li :class="{ alternate: index % 2, border: index < about.length - 1 }">
+            <template v-for="(section, index) in theme.aboutUs">
+                <li :class="{ alternate: index % 2, border: index < theme.aboutUs.length - 1 }">
                     <div class="card">
-                        <img :src="asset(section.image)" />
+                        <img :src="section.image" />
                     </div>
                     <div class="content">
                         <h1>{{ section.title }}</h1>
-                        <p>{{ section.content }}</p>
+                        <div v-html="section.content" />
                         <div class="buttons">
                             <template v-for="action in section.actions">
-                                <Button>{{ action.text }}</Button>
+                                <Button :link="action.page[0]?.uri">{{ action.text }}</Button>
                             </template>
                         </div>
                     </div>
@@ -76,78 +76,44 @@
 
     <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
         <div id="cards">
-            <a href="#" class="card">
-                <img :src="asset('groups/square-1.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-2.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-3.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-4.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-5.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-1.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-2.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-3.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-4.jpg')">
-                <span>Ministério</span>
-            </a>
-            <a href="#" class="card">
-                <img :src="asset('groups/square-5.jpg')">
-                <span>Ministério</span>
-            </a>
+            <template v-for="group in theme.groups">
+                <a :href="group.page[0]?.uri" class="card">
+                    <img :src="group.image">
+                    <span>{{group.name}}</span>
+                </a>
+            </template>
         </div>
     </Section>
 
     <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
         <div id="contact-row">
             <div id="contact-info">
-                <a href="#">
+                <a :href="whatsappLink" target="_blank">
                     <i class="fab icon-large fa-whatsapp"></i>
                     <p>
                         <span class="title">Whatsapp</span>
-                        <span class="subtitle">(81) 9319-6221</span>
+                        <span class="subtitle">{{ theme.contactWhatsapp }}</span>
                     </p>
                 </a>
-                <a href="#">
+                <a :href="phoneLink" target="_blank">
                     <i class="fas icon-large fa-mobile-alt"></i>
                     <p>
                         <span class="title">Telefone</span>
-                        <span class="subtitle">(81) 3432-3629</span>
+                        <span class="subtitle">{{ theme.contactPhone }}</span>
                     </p>
                 </a>
-                <a href="#">
+                <a :href="locationLink" target="_blank">
                     <i class="fas icon-medium fa-map-marked-alt"></i>
                     <p>
                         <span class="title">Localização</span>
-                        <span class="subtitle">Rua Alcina Coelho de Carvalho, 700<br />Casa Caiada, Olinda - PE</span>
+                        <span class="subtitle">{{ theme.contactLocation }}</span>
                     </p>
                 </a>
-                <a href="#">
+                <a :href="emailLink" target="_blank">
                     <i class="fas icon-medium fa-envelope-open-text"></i>
                     <p>
                         <span class="title">Email</span>
-                        <span class="subtitle">central.ipcc@gmail.com</span>
+                        <span class="subtitle">{{ theme.contactEmail }}</span>
                     </p>
                 </a>
             </div>
@@ -164,31 +130,27 @@
     <Section id="footer" class="dark">
         <div id="footer-items">
             <div id="footer-main-item">
-                <h3>A IPCC</h3>
-                Somos uma igreja cristã, reformada e federada à Igreja Presbiteriana do Brasil, através do Presbitério Olinda Norte. Nossa denominação está no Brasil há mais de 150 anos e tem uma história que remonta à Reforma Protestante (1517 A.D.). Se você deseja conhecer melhor a IPB, pode acessar ipb.org.br.
+                <h3>{{ theme.footerFirstTitle }}</h3>
+                {{ theme.footerFirst }}
             </div>
             <div id="footer-secondary-items">
                 <div id="item">
-                    <h3>Horários – Domingo</h3>
-                    09:00 – Culto Matutino
-                    <br />
-                    10:00 – Escola Dominical
-                    <br />
-                    18:30 – Culto Noturno
+                    <h3>{{ theme.footerSecondTitle }}</h3>
+                    {{ theme.footerSecond }}
                 </div>
                 <div id="item">
                     <h3>Redes Sociais</h3>
-                    <i class="fab fa-youtube"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-facebook"></i>
-                    <i class="fab fa-spotify"></i>
+                    <a v-if="theme.socialYoutube" :href="theme.socialYoutube"><i class="fab fa-youtube"></i></a>
+                    <a v-if="theme.socialInstagram" :href="theme.socialInstagram"><i class="fab fa-instagram"></i></a>
+                    <a v-if="theme.socialFacebook" :href="theme.socialFacebook"><i class="fab fa-facebook"></i></a>
+                    <a v-if="theme.socialSpotify" :href="theme.socialSpotify"><i class="fab fa-spotify"></i></a>
                 </div>
             </div>
         </div>
     </Section>
 
     <Section id="copyright" class="darker center">
-        Igreja Presbiteriana de Casa Caiada
+        {{ site.title }}
     </Section>
 </template>
 
@@ -208,55 +170,69 @@ export default {
         MenuCollapsible,
     },
     apollo: {
-        query: gql`query {
-            query: generalSettings {
-                title
-                description
-            }
-        }`,
+        query: {
+            query: gql`query {
+                site: generalSettings {
+                    title
+                    description
+                }
+                theme: crbThemeOptions {
+                    logo
+                    welcomeTitle
+                    welcomeSubtitle
+                    welcomeVideo
+                    banners {
+                        image
+                        page {
+                            uri
+                        }
+                    }
+                    aboutUs {
+                        title
+                        content
+                        image
+                        actions {
+                            text
+                            page {
+                                uri
+                            }
+                        }
+                    }
+                    groups {
+                        name
+                        image
+                        page {
+                            uri
+                        }
+                    }
+                    contactWhatsapp,
+                    contactPhone,
+                    contactLocation,
+                    contactEmail,
+                    footerFirstTitle,
+                    footerFirst,
+                    footerSecondTitle,
+                    footerSecond,
+                    socialYoutube,
+                    socialInstagram,
+                    socialFacebook,
+                    socialSpotify,
+                }
+            }`,
+            manual: true,
+            result: function({ data, loading }) {
+                if (!loading) {
+                    this.site = data.site
+                    this.theme = data.theme
+                }
+            },
+        }
     },
     data: function() {
         return {
-            // default initialization of queried data is necessary
-            query: {
-                title: '',
-                description: ''
-            },
-            about: [
-                {
-                    'title': 'No Que Cremos',
-                    'image': 'about/about-1.jpg',
-                    'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                    'actions': [
-                        { 'text': 'Documentos de fé' }
-                    ]
-                },
-                {
-                    'title': 'Onde Estamos?',
-                    'image': 'about/about-2.jpg',
-                    'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                    'actions': [
-                        { 'text': 'Ver mapa' }
-                    ]
-                },
-                {
-                    'title': 'A IPCC',
-                    'image': 'about/about-3.jpg',
-                    'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                    'actions': [
-                        { 'text': 'Nossa história' },
-                        { 'text': 'Nossos oficiais' }
-                    ]
-                },
-                {
-                    'title': 'Envolva-se',
-                    'image': 'about/about-4.jpg',
-                    'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                    'actions': [
-                        { 'text': 'Ver mais' }
-                    ]
-                }
-            ],
+            // default initialization of root queried data is necessary
+            site: {},
+            theme: {},
             sermons: [
                 { title: 'Atos', image: 'sermons/series-1.jpg' },
                 { title: '1 Coríntios', image: 'sermons/series-2.jpg' },
@@ -267,6 +243,32 @@ export default {
                 { title: 'Romanos', image: 'sermons/series-7.jpg' },
                 { title: 'Salmos', image: 'sermons/series-8.jpg' },
             ]
+        }
+    },
+    computed: {
+        whatsappLink: function() {
+            if (this.theme.contactWhatsapp) {
+                const whatsapp = this.theme.contactWhatsapp.replaceAll(/[^0-9]+/g, '')
+                return 'https://api.whatsapp.com/send?phone=+55' + whatsapp
+            }
+        },
+        phoneLink: function() {
+            if (this.theme.contactPhone) {
+                const phone = this.theme.contactPhone.replaceAll(/[^0-9]+/g, '')
+                return 'tel:+55' + phone
+            }
+        },
+        locationLink: function() {
+            if (this.theme.contactLocation) {
+                const location = this.theme.contactLocation.replaceAll(/\s+/g, ' ')
+                return 'https://www.google.com/maps/search/?api=1&query=' + encodeURI(location)
+            }
+        },
+        emailLink: function() {
+            if (this.theme.contactEmail) {
+                const email = this.theme.contactEmail.trim()
+                return 'mailto:' + email
+            }
         }
     }
 }
@@ -431,7 +433,7 @@ Section#about-us ul
             h1
                 margin: 0
 
-            p
+            div
                 line-height 25px
                 padding 10px 0
 
@@ -588,6 +590,7 @@ Section#contact #contact-row
                     color #444
                     font-size 16px
                     margin-top 5px
+                    white-space pre
 
         a:hover, a:hover span.subtitle
             color #3069B3
@@ -633,6 +636,7 @@ Section#footer
 
         #footer-main-item, #footer-secondary-items
             padding 0 20px
+            white-space pre-line
 
         #footer-secondary-items
             display grid
@@ -641,15 +645,21 @@ Section#footer
 
             #item
                 font-weight 300
-                white-space nowrap
+                white-space pre-line
 
         h3
             font-size 16px
             margin 0 0 10px
 
+        a
+            color white
+
         i
             font-size 22px
             padding 5px 20px 0 0
+
+        i:hover
+            transform scale(1.1)
 
 Section#copyright
     color #eee
