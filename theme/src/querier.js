@@ -82,7 +82,7 @@ export default {
           image: about.image,
           buttons: about.actions.map(action => ({
             text: action.text,
-            slug: action.page[0]?.uri,
+            uri: action.page[0]?.uri,
           }))
         })),
         sermons: data.sermons.nodes.map(series => ({

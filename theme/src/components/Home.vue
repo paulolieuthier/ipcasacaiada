@@ -1,5 +1,6 @@
 <template>
     <template v-if="!loading">
+        <a class="anchor" id="inicio" ref="inicio" />
         <Section id="header" flow="row" class="light-gray">
             <div id="content">
                 <header>
@@ -10,7 +11,7 @@
                     </div>
                 </header>
                 <div id="menu-horizontal">
-                    <MenuHorizontal />
+                    <MenuHorizontal ref="menu" />
                 </div>
                 <div id="menu-collapsible">
                     <MenuCollapsible />
@@ -19,11 +20,9 @@
         </Section>
 
         <Section id="banners" class="fill gray borderless">
-            <div id="images">
-                <template v-for="banner in data.banners">
-                    <a :href="banner.uri" class="image" :style="`background-image: url('${banner.image}')`" />
-                </template>
-            </div>
+            <Carousel>
+                <a v-for="banner in data.banners" class="banner" :href="banner.uri" :style="`background-image: url('${banner.image}')`" />
+            </Carousel>
         </Section>
 
         <Section id="intro" class="alternate spacing center">
@@ -40,13 +39,12 @@
             </div>
         </Section>
 
+        <a class="anchor" id="sobre-nos" ref="sobre-nos" />
         <Section id="about-us" class="spacing" flow="column" title="Sobre Nós">
             <ul>
                 <template v-for="(section, index) in data.aboutUs">
                     <li :class="{ alternate: index % 2, border: index < data.aboutUs.length - 1 }">
-                        <div class="card">
-                            <img :src="section.image" />
-                        </div>
+                        <div class="card" :style="`background-image: url('${section.image}')`" />
                         <div class="content">
                             <h1>{{ section.title }}</h1>
                             <div v-html="section.content" />
@@ -61,6 +59,7 @@
             </ul>
         </Section>
 
+        <a class="anchor" id="sermoes" ref="sermoes" />
         <Section id="sermon-series" class="spacing alternate" flow="column" title="Séries de Sermões">
             <div id="cards">
                 <template v-for="series in data.sermons">
@@ -75,6 +74,7 @@
             <Button class="see-more">Ver Todos</Button>
         </Section>
 
+        <a class="anchor" id="ministerios" ref="ministerios" />
         <Section id="groups" class="fill spacing-top" flow="column" title="Ministérios">
             <div id="cards">
                 <template v-for="group in data.groups">
@@ -86,6 +86,7 @@
             </div>
         </Section>
 
+        <a class="anchor" id="contato" ref="contato" />
         <Section id="contact" class="spacing alternate" flow="column" title="Entre em Contato">
             <div id="contact-row">
                 <div id="contact-info">
@@ -118,13 +119,11 @@
                         </p>
                     </a>
                 </div>
-                <div id="contact-form">
-                    <input type="text" placeholder="Nome" />
-                    <input type="text" placeholder="Email" />
-                    <input type="text" placeholder="Telefone" />
-                    <textarea type="text" placeholder="Mensagem" rows="3"></textarea>
-                    <input type="submit" value="Enviar" />
-                </div>
+                <form id="contact-form" ref="contact">
+                    <input type="text" id="contact-name" placeholder="Nome" />
+                    <textarea type="text" id="contact-message" placeholder="Mensagem" rows="6"></textarea>
+                    <input type="submit" value="Enviar pelo Whatsapp" />
+                </form>
             </div>
         </Section>
 
@@ -168,42 +167,115 @@
 import MenuHorizontal from './MenuHorizontal.vue'
 import MenuCollapsible from './MenuCollapsible.vue'
 import Section from './Section.vue'
+import Carousel from './Carousel.vue'
 import Button from './Button.vue'
 
+import { ref } from 'vue'
 import Querier from '../querier.js'
 
 export default {
     components: {
         Section,
+        Carousel,
         Button,
         MenuHorizontal,
         MenuCollapsible,
     },
-    setup: () => Querier.home(),
+    setup() {
+        const { loading, data } = Querier.home()
+
+        return {
+            // anchors
+            inicio: ref(null),
+            'sobre-nos': ref(null),
+            sermoes: ref(null),
+            ministerios: ref(null),
+            contato: ref(null),
+
+            menu: ref(null),
+            contact: ref(null),
+
+            loading,
+            data
+        }
+    },
+    watch: {
+        loading(isLoading) {
+            if (!isLoading) {
+                this.$nextTick(() => {
+                    // trigger scroll to correct section
+                    // can't make it work without a timer
+                    setTimeout(() => this.$refs[window.location.hash.slice(1)]?.scrollIntoView(), 400)
+
+                    this.contact.addEventListener('submit', this.onContact)
+                    window.addEventListener('scroll', this.updateMenu)
+                })
+            }
+        }
+    },
     computed: {
-        whatsappLink: function() {
-            if (this.data.contact.whatsapp) {
-                const whatsapp = this.data.contact.whatsapp.replaceAll(/[^0-9]+/g, '')
-                return 'https://api.whatsapp.com/send?phone=+55' + whatsapp
+        anchors() {
+            return {
+                inicio: this.$refs.inicio,
+                'sobre-nos': this.$refs['sobre-nos'],
+                sermoes: this.$refs.sermoes,
+                ministerios: this.$refs.ministerios,
+                contato: this.$refs.contato,
             }
         },
-        phoneLink: function() {
+        whatsappNumber() {
+            if (this.data.contact.whatsapp) {
+                return this.data.contact.whatsapp.replaceAll(/[^0-9]+/g, '')
+            }
+        },
+        whatsappLink() {
+            return this.buildWhatsappLink()
+        },
+        phoneLink() {
             if (this.data.contact.phone) {
                 const phone = this.data.contact.phone.replaceAll(/[^0-9]+/g, '')
                 return 'tel:+55' + phone
             }
         },
-        locationLink: function() {
+        locationLink() {
             if (this.data.contact.location) {
                 const location = this.data.contact.location.replaceAll(/\s+/g, ' ')
                 return 'https://www.google.com/maps/search/?api=1&query=' + encodeURI(location)
             }
         },
-        emailLink: function() {
+        emailLink() {
             if (this.data.contact.email) {
                 const email = this.data.contact.email.trim()
                 return 'mailto:' + email
             }
+        }
+    },
+    methods: {
+        buildWhatsappLink(message) {
+            if (this.whatsappNumber) {
+                let link = 'https://api.whatsapp.com/send?lang=pt_br&phone=+55' + this.whatsappNumber
+                if (message) {
+                    link += '&text=' + encodeURI(message)
+                }
+                return link
+            }
+        },
+        updateMenu(event) {
+            let item = null;
+            for (let anchor in this.anchors) {
+                const rect = this.anchors[anchor].getBoundingClientRect()
+                if (rect.top < (window.innerHeight || document.documentElement.clientHeight) / 2) {
+                    item = anchor
+                }
+            }
+            this.$refs.menu.activate(item)
+        },
+        onContact(event) {
+            event.preventDefault()
+            const name = this.contact.querySelector('input#contact-name').value
+            const message = this.contact.querySelector('textarea#contact-message').value
+            const link = this.buildWhatsappLink(`Olá, sou ${name}. ${message}`)
+            window.open(link, '_blank').focus()
         }
     }
 }
@@ -212,6 +284,10 @@ export default {
 <style scoped lang="stylus">
 .see-more
     margin-top 30px !important
+
+a.anchor
+    position relative
+    top -50px
 
 Section#header
     border-bottom 1px solid #ccc
@@ -247,7 +323,6 @@ Section#header
                 padding-left 20px
 
                 h1
-                    /* font-size calc(13px + (25 - 13) * ((100vw - 360px) / (1920 - 360))) */
                     font-size @css{min(26px, max(16px, 2vw))}
                     margin 0
                     padding 0
@@ -288,19 +363,11 @@ Section#header
                     white-space normal
 
 Section#banners
-    #images
-        display grid
-        height 40vh
-        width 100%
+    height 300px
 
-        .image
-            background-position center center
-            background-repeat no-repeat
-            background-size cover
-            grid-column 1
-            grid-row 1
-            height 100%
-            width 100%
+    .banner
+        background-position center center
+        background-size cover
 
 Section#intro
     #items
@@ -329,10 +396,13 @@ Section#intro
             margin-top 20px
 
     #video
+        aspect-ratio 16/9
         max-width 500px
         text-align center
+        width 100%
 
         video
+            height 100%
             width 100%
 
 Section#about-us ul
@@ -351,16 +421,13 @@ Section#about-us ul
         width 100%
 
         .card
+            background-position center
+            background-repeat no-repeat
+            background-size cover
             border-radius 3px 0 0 3px
             display flex
             mask-image linear-gradient(to right, rgb(0, 0, 0) 75%, transparent)
             min-width 30%
-
-            img
-                min-height 100%
-                min-width 100%
-                object-fit cover
-                object-position center
 
         .content
             padding 10px 20px 10px 40px
