@@ -117,15 +117,68 @@ add_action('after_setup_theme', function() {
 });
 
 #
-# Include generated script, style and custom javascript data in theme
+# Include generated script and style in theme markup
 #
 
 add_action('wp_enqueue_scripts', function() {
     # insert css and javascript
     wp_enqueue_style('theme-css', get_template_directory_uri() . '/dist/index.css');
     wp_enqueue_script('theme-js', get_template_directory_uri() . '/dist/index.js', array(), null, true);
-    # insert javascript variable with theme directory uri
-    wp_localize_script('theme-js', 'wpParams', array('templateDir' => get_template_directory_uri()));
+});
+
+#
+# Add support for Sermon Manager's custom post type and taxonomies in WPGraphQL
+#
+
+add_filter('register_post_type_args', function($args, $post_type) {
+    if ($post_type === 'wpfc_sermon') {
+        $args['show_in_graphql'] = true;
+        $args['graphql_single_name'] = 'sermon';
+        $args['graphql_plural_name'] = 'sermons';
+    }
+
+    return $args;
+}, 10, 2);
+
+add_filter('register_taxonomy_args', function($args, $taxonomy) {
+    if ($taxonomy === 'wpfc_preacher') {
+        $args['show_in_graphql'] = true;
+        $args['graphql_single_name'] = 'preacher';
+        $args['graphql_plural_name'] = 'preachers';
+
+    } else if ($taxonomy === 'wpfc_sermon_series') {
+        $args['show_in_graphql'] = true;
+        $args['graphql_single_name'] = 'sermonSerie';
+        $args['graphql_plural_name'] = 'sermonSeries';
+
+    } else if ($taxonomy === 'wpfc_sermon_topics') {
+        $args['show_in_graphql'] = true;
+        $args['graphql_single_name'] = 'sermonTopic';
+        $args['graphql_plural_name'] = 'sermonTopics';
+
+    } else if ($taxonomy === 'wpfc_service_type') {
+        $args['show_in_graphql'] = true;
+        $args['graphql_single_name'] = 'serviceType';
+        $args['graphql_plural_name'] = 'serviceTypes';
+
+    } else if ($taxonomy === 'wpfc_bible_book') {
+        $args['show_in_graphql'] = true;
+        $args['graphql_single_name'] = 'bibleBook';
+        $args['graphql_plural_name'] = 'bibleBooks';
+    }
+
+    return $args;
+}, 10, 2);
+
+# manually include sermon series' image field
+add_action('graphql_register_types', function() {
+    register_graphql_field('SermonSerie', 'image', [
+        'type' => 'String',
+        'description' => 'Sermon series image',
+        'resolve' => function($source, $args, $context, $info) {
+            return get_sermon_series_image_url($source->term_id, 'large');
+        }
+    ]);
 });
 
 ?>
