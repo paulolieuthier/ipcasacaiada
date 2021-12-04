@@ -2,6 +2,7 @@ setup:
 	cd theme; composer install
 	cd theme; npm run build
 
+start: run
 run:
 	docker-compose up -d --build
 
