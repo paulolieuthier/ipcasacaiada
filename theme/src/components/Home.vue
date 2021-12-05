@@ -410,6 +410,10 @@ Section#sermon-series
             position absolute
             width 100%
 
+    @media (max-width: 740px)
+        #cards
+            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 150px)}, 1fr))
+
 Section#groups
     #cards
         display grid
@@ -439,6 +443,10 @@ Section#groups
         .card:hover
             img
                 opacity 1
+
+    @media (max-width: 480px)
+        #cards
+            grid-template-columns repeat(auto-fit, minmax(@css{min(80%, 180px)}, 1fr));
 
 Section#contact #contact-row
     align-items start
