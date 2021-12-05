@@ -64,5 +64,6 @@ export default {
         width 100%
 
     nav.hidden
+        display none
         max-height 0
 </style>
