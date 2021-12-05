@@ -412,7 +412,8 @@ Section#sermon-series
 
     @media (max-width: 740px)
         #cards
-            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 150px)}, 1fr))
+            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 140px)}, 1fr))
+            grid-gap 30px
 
 Section#groups
     #cards

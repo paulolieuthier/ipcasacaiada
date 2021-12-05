@@ -105,4 +105,9 @@ Section#content
             left 0
             position absolute
             width 100%
+
+    @media (max-width: 740px)
+        #cards
+            grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 140px)}, 1fr))
+            grid-gap 30px
 </style>

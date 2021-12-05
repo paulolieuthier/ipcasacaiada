@@ -553,7 +553,8 @@ Section#sermon-series #cards #card:hover span[data-v-d70b3a]::after {
 }
 @media (max-width: 740px) {
 Section#sermon-series #cards[data-v-d70b3a] {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+    grid-gap: 30px;
 }
 }
 Section#groups #cards[data-v-d70b3a] {
@@ -859,6 +860,12 @@ Section#content #cards #card:hover span[data-v-694e0d]::after {
   left: 0;
   position: absolute;
   width: 100%;
+}
+@media (max-width: 740px) {
+Section#content #cards[data-v-694e0d] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+    grid-gap: 30px;
+}
 }
 
 /*# sourceMappingURL=index.css.map */
