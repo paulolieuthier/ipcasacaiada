@@ -26,9 +26,9 @@
                                         <div class="sermon">
                                             <p class="title"><b>{{ sermon.title }}</b></p>
                                             <p class="metadata">
+                                                <span><b>Data:</b> {{ sermon.date.toLocaleDateString() }}</span>
                                                 <span><b>Texto:</b> {{ sermon.passage }}</span>
                                                 <span><b>Pregador:</b> {{ sermon.preacher }}</span>
-                                                <span><b>Data:</b> {{ sermon.date.toLocaleDateString() }}</span>
                                             </p>
                                         </div>
                                     </div>

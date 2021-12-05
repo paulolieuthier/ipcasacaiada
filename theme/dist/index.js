@@ -37035,9 +37035,9 @@ const _hoisted_9 = {
 const _hoisted_10 = {
     class: "metadata"
 };
-const _hoisted_11 = /*#__PURE__*/ _vue.createVNode("b", null, "Texto:", -1 /* HOISTED */ );
-const _hoisted_12 = /*#__PURE__*/ _vue.createVNode("b", null, "Pregador:", -1 /* HOISTED */ );
-const _hoisted_13 = /*#__PURE__*/ _vue.createVNode("b", null, "Data:", -1 /* HOISTED */ );
+const _hoisted_11 = /*#__PURE__*/ _vue.createVNode("b", null, "Data:", -1 /* HOISTED */ );
+const _hoisted_12 = /*#__PURE__*/ _vue.createVNode("b", null, "Texto:", -1 /* HOISTED */ );
+const _hoisted_13 = /*#__PURE__*/ _vue.createVNode("b", null, "Pregador:", -1 /* HOISTED */ );
 _vue.popScopeId();
 const render = /*#__PURE__*/ _withId((_ctx, _cache)=>{
     const _component_Section = _vue.resolveComponent("Section");
@@ -37100,15 +37100,15 @@ const render = /*#__PURE__*/ _withId((_ctx, _cache)=>{
                                                 _vue.createVNode("p", _hoisted_10, [
                                                     _vue.createVNode("span", null, [
                                                         _hoisted_11,
-                                                        _vue.createTextVNode(" " + _vue.toDisplayString(sermon.passage), 1 /* TEXT */ )
+                                                        _vue.createTextVNode(" " + _vue.toDisplayString(sermon.date.toLocaleDateString()), 1 /* TEXT */ )
                                                     ]),
                                                     _vue.createVNode("span", null, [
                                                         _hoisted_12,
-                                                        _vue.createTextVNode(" " + _vue.toDisplayString(sermon.preacher), 1 /* TEXT */ )
+                                                        _vue.createTextVNode(" " + _vue.toDisplayString(sermon.passage), 1 /* TEXT */ )
                                                     ]),
                                                     _vue.createVNode("span", null, [
                                                         _hoisted_13,
-                                                        _vue.createTextVNode(" " + _vue.toDisplayString(sermon.date.toLocaleDateString()), 1 /* TEXT */ )
+                                                        _vue.createTextVNode(" " + _vue.toDisplayString(sermon.preacher), 1 /* TEXT */ )
                                                     ])
                                                 ])
                                             ])
