@@ -369,7 +369,7 @@ Section#about-us ul
 Section#sermon-series
     #cards
         display grid
-        grid-gap 50px
+        grid-gap 40px 50px
         grid-template-columns repeat(auto-fit, minmax(@css{min(100%, 180px)}, 1fr))
         justify-items center
         padding 20px 50px
@@ -382,33 +382,33 @@ Section#sermon-series
             max-width 300px
             width 100%
 
-        #card .image-wrapper
-            box-shadow 0 0 1px #000
-            overflow hidden
-            width 100%
+            .image-wrapper
+                box-shadow 0 0 1px #000
+                overflow hidden
+                width 100%
 
-        #card img
-            display block
-            transition transform 0.2s
-            width 100%
+            img
+                display block
+                transition transform 0.2s
+                width 100%
 
-        #card span
-            font-weight 600
-            margin 10px 0
-            padding 10px 0
-            position relative
+            span
+                font-weight 600
+                margin 20px 0 0
+                position relative
 
-        #card:hover img
-            transform scale(1.1)
+        #card:hover
+            img
+                transform scale(1.1)
 
-        #card:hover span::after
-            background #3069B3
-            bottom 2px
-            content ''
-            height 4px
-            left 0
-            position absolute
-            width 100%
+            span::after
+                background #3069B3
+                bottom -6px
+                content ''
+                height 4px
+                left 0
+                position absolute
+                width 100%
 
     @media (max-width: 740px)
         #cards
@@ -444,7 +444,7 @@ Section#groups
             img
                 opacity 1
 
-    @media (max-width: 480px)
+    @media (max-width: 740px)
         #cards
             grid-template-columns repeat(auto-fit, minmax(@css{min(80%, 180px)}, 1fr));
 
