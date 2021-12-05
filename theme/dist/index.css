@@ -681,6 +681,10 @@ Section#contact #contact-row #contact-form input[type="submit"][data-v-d70b3a]:h
   height: 100%;
   width: 100%;
 }
+Section#content[data-v-1281b0] {
+  padding-left: 20px;
+  padding-right: 20px;
+}
 
 #banner-wrapper[data-v-c7a5ab] {
   height: 200px;
