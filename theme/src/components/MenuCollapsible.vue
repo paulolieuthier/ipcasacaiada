@@ -1,6 +1,8 @@
 <template>
     <div id="content">
-        <a href="#" :onclick="toggleMenu" class="strong">Menu <span id="arrow" :class="{ active: menuVisible }">&#11167;</span></a>
+        <a id="menu" href="#" :onclick="toggleMenu" :class="{ active: menuVisible }">
+            Menu <i id="arrow" class="fas fa-angle-double-down"></i>
+        </a>
         <nav :class="{ hidden: !menuVisible }">
             <a href="/#sobre-nos">Sobre Nós</a>
             <a href="/#sermoes">Sermões</a>
@@ -19,7 +21,6 @@ export default {
     },
     methods: {
         toggleMenu: function() {
-            console.log('aeeee')
             this.menuVisible = !this.menuVisible
         }
     }
@@ -42,14 +43,17 @@ export default {
         white-space nowrap
         width 100%
 
-    a.strong
+    a#menu
+        display flex
         font-weight 600
+        gap 3px
+        justify-content center
 
-    span#arrow
+    i#arrow
         display inline-block
         transition transform 0.5s ease
 
-    span#arrow.active
+    a#menu.active i#arrow
         transform rotate(180deg)
 
     nav
