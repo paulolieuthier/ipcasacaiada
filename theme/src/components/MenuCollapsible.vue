@@ -1,13 +1,13 @@
 <template>
     <div id="content">
-        <a id="menu" href="#" :onclick="toggleMenu" :class="{ active: menuVisible }">
+        <a id="menu" :onclick="toggleMenu" :class="{ active: menuVisible }">
             Menu <i id="arrow" class="fas fa-angle-double-down"></i>
         </a>
         <nav :class="{ hidden: !menuVisible }">
-            <a href="/#sobre-nos">Sobre Nós</a>
-            <a href="/#sermoes">Sermões</a>
-            <a href="/#ministerios">Ministérios</a>
-            <a href="/#contato">Contato</a>
+            <a :onclick="toggleMenu" href="/#sobre-nos">Sobre Nós</a>
+            <a :onclick="toggleMenu" href="/#sermoes">Sermões</a>
+            <a :onclick="toggleMenu" href="/#ministerios">Ministérios</a>
+            <a :onclick="toggleMenu" href="/#contato">Contato</a>
         </nav>
     </div>
 </template>
@@ -44,6 +44,7 @@ export default {
         width 100%
 
     a#menu
+        cursor pointer
         display flex
         font-weight 600
         gap 3px
