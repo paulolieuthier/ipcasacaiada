@@ -174,7 +174,6 @@ Section#header
 @media (max-width: 767px)
     Section#header
         height auto
-        position initial
 
         #menu-horizontal
             display none
