@@ -17,17 +17,22 @@ export default {
             timer: null,
             slides: ref(null),
             pagination: ref(null),
+            touchEventX: null,
+            touchEventY: null,
+            touchDirection: null,
         }
     },
     mounted() {
         const slides = this.$refs.slides.children
         if (slides.length) {
             this.setupPagination()
-            this.changeSlide(0)
+            this.changeToSlide(0)
 
-            const options = { passive: true }
-            this.$refs.slides.addEventListener('mouseenter', this.stopTimer, options)
-            this.$refs.slides.addEventListener('mouseleave', this.restartTimer, options)
+            this.$refs.slides.addEventListener('mouseenter', this.stopTimer, { passive: true })
+            this.$refs.slides.addEventListener('mouseleave', this.restartTimer, { passive: true })
+            this.$refs.slides.addEventListener('touchstart', this.handleTouchStart, false)
+            this.$refs.slides.addEventListener('touchmove', this.handleTouchMove, false)
+            this.$refs.slides.addEventListener('touchend', this.handleTouchEnd, false)
         }
     },
     beforeUnmount() {
@@ -35,6 +40,9 @@ export default {
         if (this.$refs.slides.children) {
             this.$refs.slides.removeEventListener('mouseenter', this.stopTimer)
             this.$refs.slides.removeEventListener('mouseleave', this.restartTimer)
+            this.$refs.slides.removeEventListener('touchstart', this.handleTouchStart)
+            this.$refs.slides.removeEventListener('touchmove', this.handleTouchMove)
+            this.$refs.slides.removeEventListener('touchend', this.handleTouchEnd)
         }
     },
     methods: {
@@ -42,27 +50,35 @@ export default {
             const slides = this.$refs.slides.children.length
             for (let i = 0; i < slides; ++i) {
                 const button = document.createElement('button')
-                button.addEventListener('click', () => this.changeSlide(i))
+                button.addEventListener('click', () => this.changeToSlide(i))
                 this.$refs.pagination.appendChild(button)
             }
         },
-        changeSlide(index) {
+        changeToSlide(index) {
             this.stopTimer()
             this.$refs.slides.querySelector('.active')?.classList.remove('active')
-            const slides = this.$refs.slides.children
-            slides[index].classList.add('active')
-            this.startTimer(index)
+            this.$refs.pagination.querySelector('.active')?.classList.remove('active')
+            this.$refs.slides.children[index].classList.add('active')
+            this.$refs.pagination.children[index].classList.add('active')
+            this.index = index
+            this.startTimer()
         },
-        startTimer(index) {
-            const nextSlideIndex = this.nextSlideIndex(index)
-            this.timer = setTimeout(() => {
-                this.index = nextSlideIndex
-                this.changeSlide(nextSlideIndex)
-            }, 4000)
+        changeToNextSlide() {
+            this.changeToSlide(this.nextSlideIndex())
         },
-        nextSlideIndex(index) {
+        changeToPrevSlide() {
+            this.changeToSlide(this.prevSlideIndex())
+        },
+        startTimer() {
+            this.timer = setTimeout(() => this.changeToSlide(this.nextSlideIndex()), 4000)
+        },
+        nextSlideIndex() {
             const slides = this.$refs.slides.children.length
-            return index < slides - 1 ? index + 1 : 0
+            return this.index < slides - 1 ? this.index + 1 : 0
+        },
+        prevSlideIndex() {
+            const slides = this.$refs.slides.children.length
+            return this.index > 0 ? this.index - 1 : slides - 1
         },
         stopTimer() {
             if (this.timer)
@@ -70,8 +86,47 @@ export default {
         },
         restartTimer() {
             if (this.index !== null)
-                this.startTimer(this.index)
+                this.startTimer()
         },
+        handleTouchStart(event) {
+            this.touchEventX = event.touches[0].clientX
+            this.touchEventY = event.touches[0].clientY
+        },
+        handleTouchMove(event) {
+            if (!this.touchEventX || !this.touchEventY)
+                return
+
+            var xUp = event.touches[0].clientX
+            var yUp = event.touches[0].clientY
+
+            var xDiff = this.touchEventX - xUp;
+            var yDiff = this.touchEventY - yUp;
+
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0) {
+                    this.touchDirection = 'next'
+                } else {
+                    this.touchDirection = 'prev'
+                }
+
+                event.preventDefault()
+            }
+
+            this.touchEventX = null
+            this.touchEventY = null
+        },
+        handleTouchEnd() {
+            if (!this.touchDirection)
+                return
+
+            if (this.touchDirection == 'next') {
+                this.changeToNextSlide();
+            } else {
+                this.changeToPrevSlide();
+            }
+
+            this.touchDirection = null
+        }
     }
 }
 </script>
@@ -123,6 +178,6 @@ export default {
     #pagination:deep(button:hover)
         opacity 1
 
-    #pagination:deep(button:active)
-        transform scale(1.1)
+    #pagination:deep(button:active), #pagination:deep(button.active)
+        transform scale(1.3)
 </style>
