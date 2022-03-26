@@ -6,19 +6,19 @@
     "build": "parcel build src/index.js"
   },
   "devDependencies": {
-    "@parcel/transformer-vue": "^2.0.0-rc.0",
-    "parcel": "^2.0.0-rc.0",
+    "@parcel/transformer-vue": "^2.4.0",
+    "parcel": "^2.4.0",
     "parcel-plugin-watch-reload": "^1.0.3",
-    "stylus": "^0.54.8"
+    "stylus": "^0.57.0"
   },
   "watchreload": {
     "files": "**/*.php"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.8",
-    "@vue/apollo-composable": "^4.0.0-alpha.14",
-    "graphql": "^15.5.1",
-    "graphql-tag": "^2.12.5",
-    "vue-router": "^4.0.11"
+    "@apollo/client": "^3.5.10",
+    "@vue/apollo-composable": "^4.0.0-alpha.16",
+    "graphql": "^16.3.0",
+    "graphql-tag": "^2.12.6",
+    "vue-router": "^4.0.14"
   }
 }
