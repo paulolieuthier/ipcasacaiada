@@ -38,20 +38,20 @@ add_action('carbon_fields_register_fields', function() {
                     ]),
 
                 Field::make('separator', 'crb_separator_banner_standalone_page', 'Banner (página avulsa)'),
-                Field::make('image', 'banner-standalone-page', 'Imagem')
+                Field::make('image', 'banner_standalone_page', 'Imagem')
                     ->set_value_type('url'),
 
                 Field::make('separator', 'crb_separator_welcome', 'Saudação'),
-                Field::make('text', 'welcome-title', 'Título')
+                Field::make('text', 'welcome_title', 'Título')
                     ->set_default_value('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-                Field::make('text', 'welcome-subtitle', 'Subtítulo')
+                Field::make('text', 'welcome_subtitle', 'Subtítulo')
                     ->set_default_value('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                Field::make('image', 'welcome-video', 'Vídeo')
+                Field::make('image', 'welcome_video', 'Vídeo')
                     ->set_type(['video'])
                     ->set_value_type('url'),
 
                 Field::make('separator', 'crb_separator_about', 'Sobre Nós'),
-                Field::make('complex', 'about-us', '')
+                Field::make('complex', 'about_us', '')
                     ->add_fields([
                         Field::make('text', 'title', 'Título'),
                         Field::make('rich_text', 'content', 'Texto'),
@@ -86,31 +86,31 @@ add_action('carbon_fields_register_fields', function() {
                     ]),
 
                 Field::make('separator', 'crb_separator_contact', 'Contato'),
-                Field::make('text', 'contact-whatsapp', 'Whatsapp')
+                Field::make('text', 'contact_whatsapp', 'Whatsapp')
                     ->set_default_value('(99) 99999-9999'),
-                Field::make('text', 'contact-phone', 'Telefone')
+                Field::make('text', 'contact_phone', 'Telefone')
                     ->set_default_value('(99) 99999-9999'),
-                Field::make('textarea', 'contact-location', 'Localização')
+                Field::make('textarea', 'contact_location', 'Localização')
                     ->set_rows(2)
                     ->set_default_value(str_replace("<br />", "\n", 'Rua Sem Nome, S/N<br />Bairro, Cidade - UF')),
-                Field::make('text', 'contact-email', 'Email')
+                Field::make('text', 'contact_email', 'Email')
                     ->set_default_value('email@email.com'),
 
                 Field::make('separator', 'crb_separator_footer', 'Rodapé'),
-                Field::make('text', 'footer-first-title', 'Rodapé 1 - Título')
+                Field::make('text', 'footer_first_title', 'Rodapé 1 - Título')
                     ->set_default_value('Título'),
-                Field::make('textarea', 'footer-first', 'Rodapé 1 - Texto')
+                Field::make('textarea', 'footer_first', 'Rodapé 1 - Texto')
                     ->set_rows(3)
                     ->set_default_value('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-                Field::make('text', 'footer-second-title', 'Rodapé 2 - Título')
+                Field::make('text', 'footer_second_title', 'Rodapé 2 - Título')
                     ->set_default_value('Título'),
-                Field::make('textarea', 'footer-second', 'Rodapé 2')
+                Field::make('textarea', 'footer_second', 'Rodapé 2')
                     ->set_rows(3)
                     ->set_default_value(str_replace("<br />", "\n", '09:00 – Culto Matutino<br />10:00 – Escola Dominical<br />18:30 – Culto Noturno')),
-                Field::make('text', 'social-youtube', 'Redes Sociais: Link do Youtube'),
-                Field::make('text', 'social-instagram', 'Redes Sociais: Link do Instagram'),
-                Field::make('text', 'social-facebook', 'Redes Sociais: Link do Facebook'),
-                Field::make('text', 'social-spotify', 'Redes Sociais: Link do Spotify'),
+                Field::make('text', 'social_youtube', 'Redes Sociais: Link do Youtube'),
+                Field::make('text', 'social_instagram', 'Redes Sociais: Link do Instagram'),
+                Field::make('text', 'social_facebook', 'Redes Sociais: Link do Facebook'),
+                Field::make('text', 'social_spotify', 'Redes Sociais: Link do Spotify'),
             ])
     );
 });
