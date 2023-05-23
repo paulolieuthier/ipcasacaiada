@@ -1,0 +1,8 @@
+{
+    "name": "paulolieuthier/ipcasacaiada-theme",
+    "type": "project",
+    "require": {
+        "htmlburger/carbon-fields": "^3.6",
+        "matepaiva/wp-graphql-crb": "^0.0.6"
+    }
+}

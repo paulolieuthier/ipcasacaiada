@@ -1,0 +1,26 @@
+{
+  "name": "ipcasacaiada",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "parcel watch src/index.js",
+    "build": "parcel build src/index.js"
+  },
+  "devDependencies": {
+    "@parcel/transformer-vue": "^2.8.3",
+    "parcel": "^2.8.3",
+    "parcel-plugin-watch-reload": "^1.0.3",
+    "stylus": "^0.59.0"
+  },
+  "watchreload": {
+    "files": "**/*.php"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.14",
+    "@vue/apollo-composable": "^4.0.0-beta.5",
+    "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
+    "process": "^0.11.10",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.1"
+  }
+}

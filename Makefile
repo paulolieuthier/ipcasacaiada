@@ -1,16 +1,14 @@
-setup:
-	cd theme; composer install
-	cd theme; npm run build
+build:
+	composer install
+	cd ./web/app/themes/ipcasacaiada; composer install; yarn run build
 
 start: run
 run:
-	docker-compose up -d --build
+	docker compose up -d
+	php -S 127.0.0.1:8000 -t web -d display_errors=1 -d upload_max_filesize=10M
 
 stop:
-	docker-compose down
+	docker compose down
 
 dev:
-	cd theme; npm run dev
-
-build:
-	cd theme; npm run build
+	cd ./web/app/themes/ipcasacaiada; yarn run dev
