@@ -1,6 +1,6 @@
 build:
 	composer install
-	cd ./web/app/themes/ipcasacaiada; composer install; yarn run build
+	cd ./web/app/themes/ipcasacaiada; composer install; yarn install; yarn run build
 
 start: run
 run:

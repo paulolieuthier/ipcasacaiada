@@ -1,4 +1,5 @@
 name: Deploy
+run-name: Deploy to ${{ inputs.environment }}
 on:
   workflow_dispatch:
     inputs:
@@ -10,6 +11,7 @@ on:
         - production
 jobs:
   deploy:
+    name: Deploy to ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,47 +20,42 @@ jobs:
         run: |
           sudo apt update
           sudo apt install composer yarnpkg ripgrep lftp
-          sudo ln -s /usr/bin/yarn /usr/bin/yarnpkg
+          sudo ln -s /usr/bin/yarnpkg /usr/bin/yarn
       - name: Build
         run: make build
-      - name: Setup deploy
+      - name: Generate Uppercased Environment
+        id: env-upper
+        env:
+          ENV: ${{ inputs.environment }}
+        run: echo "env=${ENV^^}" >> $GITHUB_OUTPUT
+      - name: Deploy
+        env:
+          ENV: ${{ inputs.environment }}
+          WP_HOME: "${{ vars[format('DEPLOY_{0}_WP_HOME', steps.env-upper.outputs.env)] }}"
+          DB_HOST: "${{ secrets[format('DEPLOY_{0}_DB_HOST', steps.env-upper.outputs.env)] }}"
+          DB_NAME: "${{ secrets[format('DEPLOY_{0}_DB_NAME', steps.env-upper.outputs.env)] }}"
+          DB_USER: "${{ secrets[format('DEPLOY_{0}_DB_USERNAME', steps.env-upper.outputs.env)] }}"
+          DB_PASS: "${{ secrets[format('DEPLOY_{0}_DB_PASSWORD', steps.env-upper.outputs.env)] }}"
+          FTP_HOST: "${{ secrets[format('DEPLOY_{0}_FTP_HOST', steps.env-upper.outputs.env)] }}"
+          FTP_USER: "${{ secrets[format('DEPLOY_{0}_FTP_USERNAME', steps.env-upper.outputs.env)] }}"
+          FTP_PASS: "${{ secrets[format('DEPLOY_{0}_FTP_PASSWORD', steps.env-upper.outputs.env)] }}"
         run: |
-          export ENV=${{ github.event.inputs.name }}
-          export ENV_UPPER=$(tr '[:lower:]' '[:upper]' <<< $ENV)
+          echo "Deploying to ${ENV}..."
 
-          export WP_HOME="${{ secrets[format('DEPLOY_{0}_WP_HOME', env.ENV_UPPER)] }}"
-          export DB_HOST="${{ secrets[format('DEPLOY_{0}_DB_HOST', env.ENV_UPPER)] }}"
-          export DB_NAME="${{ secrets[format('DEPLOY_{0}_DB_NAME', env.ENV_UPPER)] }}"
-          export DB_USER="${{ secrets[format('DEPLOY_{0}_DB_USERNAME', env.ENV_UPPER)] }}"
-          export DB_PASS="${{ secrets[format('DEPLOY_{0}_DB_PASSWORD', env.ENV_UPPER)] }}"
-          export FTP_HOST="${{ secrets[format('DEPLOY_{0}_FTP_HOST', env.ENV_UPPER)] }}"
-          export FTP_USER="${{ secrets[format('DEPLOY_{0}_FTP_USERNAME', env.ENV_UPPER)] }}"
-          export FTP_PASS="${{ secrets[format('DEPLOY_{0}_FTP_PASSWORD', env.ENV_UPPER)] }}"
-
-          echo "::add-mask::$DB_HOST"
-          echo "::add-mask::$DB_NAME"
-          echo "::add-mask::$DB_USER"
-          echo "::add-mask::$DB_PASS"
-          echo "::add-mask::$FTP_HOST"
-          echo "::add-mask::$FTP_USER"
-          echo "::add-mask::$FTP_PASS"
-
-          cat > .env.${ENV} <<EOF
-            WP_ENV='${ENV}'
-            WP_HOME='${WP_HOME}'
-            WP_SITEURL="${WP_HOME}/wp"
-            DB_HOST='${DB_HOST}'
-            DB_NAME='${DB_NAME}'
-            DB_USER='${DB_USER}'
-            DB_PASSWORD='${DB_PASS}'
+          cat > .env <<EOF
+          WP_ENV='${ENV}'
+          WP_HOME='${WP_HOME}'
+          WP_SITEURL="${WP_HOME}/wp"
+          DB_HOST='${DB_HOST}'
+          DB_NAME='${DB_NAME}'
+          DB_USER='${DB_USER}'
+          DB_PASSWORD='${DB_PASS}'
           EOF
 
           # transforms `define('X', 'Y');` into `X='Y'`
           curl --http1.1 https://api.wordpress.org/secret-key/1.1/salt \
             | rg -o "define\('(.*)',\s*'(.*)'\);" -r '$1='"'"'$2'"'" \
-            >> .env.${ENV}
-
-          cat .env.staging
+            >> .env
 
           lftp ${FTP_HOST} -u ${FTP_USER},${FTP_PASS} -e "
             set net:timeout 60;
@@ -66,6 +63,6 @@ jobs:
             set net:reconnect-interval-multiplier 2;
             set net:reconnect-interval-base 5;
             set ssl:verify-certificate false; 
-            mirror --verbose --dry-run --parallel=5 --reverse --only-newer --delete --delete-excluded --exclude-rx-from=.ftpignore;
+            mirror --verbose --use-cache --parallel=5 --reverse --only-newer --delete --delete-excluded --exclude-rx-from=.ftpignore;
             quit
           "
