@@ -63,6 +63,6 @@ jobs:
             set net:reconnect-interval-multiplier 2;
             set net:reconnect-interval-base 5;
             set ssl:verify-certificate false; 
-            mirror --verbose --use-cache --parallel=5 --reverse --only-newer --delete --delete-excluded --exclude-rx-from=.ftpignore;
+            mirror --verbose --use-cache --parallel=5 --reverse --only-newer --delete-excluded --exclude-rx-from=.ftpignore;
             quit
           "
