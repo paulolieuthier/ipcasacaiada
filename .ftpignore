@@ -1,0 +1,11 @@
+\.git.*
+docker.*
+Makefile
+composer.*
+README.md
+web/app/themes/ipcasacaiada/.parcel_cache
+web/app/themes/ipcasacaiada/assets
+web/app/themes/ipcasacaiada/node_modules
+web/app/themes/ipcasacaiada/package.json
+web/app/themes/ipcasacaiada/yarn.lock
+web/app/themes/ipcasacaiada/src
